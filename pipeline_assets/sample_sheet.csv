@@ -1,2 +1,4 @@
 ﻿alias,filepath,reference
-NB02_tbSeq,NB02RYOconFlank_U.bam,reference_avatar3.fasta
+NB02_tbSeq,NB02_demuxed_U.bam,reference_avatar3.fasta
+NB03_tbSeq,NB03_demuxed_U.bam,reference_avatar3.fasta
+NB04_tbSeq,NB04_demuxed_U.bam,reference_avatar3.fasta
