@@ -1,6 +1,4 @@
-FROM nextflow/nextflow
-
-RUN nextflow self-update
+FROM nextflow/nextflow:24.04.4
 
 # Install Python and pip
 RUN yum install -y \
