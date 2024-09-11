@@ -16,7 +16,7 @@ process SortBamUnaligned {
     val read.alias 
     val read.reference 
 
-    publishDir "${params.outdir}/${read.alias}", mode: 'copy'
+    // publishDir "${params.outdir}/${read.alias}", mode: 'copy'
 
     script:
     SortBam("${read.filepath}", "${read.alias}_unaligned_sorted.bam")
@@ -32,7 +32,7 @@ process SortBamAligned {
     path "${read_alias}_sorted.bam"
     val read_alias
 
-    publishDir "${params.outdir}/${read_alias}", mode: 'copy'
+    // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
     SortBam("${read}", "${read_alias}_sorted.bam")

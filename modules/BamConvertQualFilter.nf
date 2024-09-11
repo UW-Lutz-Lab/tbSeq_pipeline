@@ -16,7 +16,7 @@ process BamConvertQualFilter {
     val reference
     // file "${reads.baseName}_aligned.sam"
 
-    publishDir "${params.outdir}/${read_alias}", mode: 'copy'
+    // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
     """

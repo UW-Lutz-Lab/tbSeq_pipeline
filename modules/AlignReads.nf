@@ -31,7 +31,7 @@ process AlignReads {
     path "${read_alias}_aligned.sam"
     val read_alias
 
-    publishDir "${params.outdir}/${read_alias}", mode: 'copy'
+    // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
     """
