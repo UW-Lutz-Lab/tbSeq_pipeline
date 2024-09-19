@@ -1,25 +1,31 @@
-FROM nextflow/nextflow:24.04.4
+FROM ubuntu:24.04
 
-# Install Python and pip
-RUN yum install -y \
+RUN apt-get update && \
+    apt-get install -y \
     python3 \
     python3-pip \
     make \
     gcc \
-    zlib-devel \
+    zlib1g-dev \
     bzip2 \
-    bzip2-devel \
-    xz-devel \
-    ncurses-devel \
-    && yum clean all
+    libbz2-dev \
+    xz-utils \
+    liblzma-dev \
+    libncurses5-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install wget for downloading files (if not already included in your base image)
-RUN yum install -y \
+RUN apt-get update && \
+    apt-get install -y \
     wget \
     unzip \
     tar \
-    && \
-    yum clean all
+    python3-venv \
+    curl \
+    zip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Create a virtual environment
 RUN python3 -m venv /opt/venv
@@ -33,10 +39,19 @@ RUN pip install \
     altair[all] \
     NanoPlot
 
+# # Install SDKMAN
+RUN curl -s "https://get.sdkman.io" | bash
 
+SHELL ["/bin/bash", "-c"]  
 
-SHELL ["/bin/bash", "-c"] 
-    # Install samtools
+# Install Java and nextflow
+RUN source "/root/.sdkman/bin/sdkman-init.sh" && \
+    sdk install java 17.0.10-tem && \
+    curl -s https://get.nextflow.io | bash && \
+    chmod +x nextflow && \
+    mv nextflow /usr/local/bin
+
+# Install samtools
 RUN cd /opt \
 && wget https://github.com/samtools/samtools/releases/download/1.20/samtools-1.20.tar.bz2 \
 && tar -xjf samtools-1.20.tar.bz2 \
