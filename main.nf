@@ -8,8 +8,6 @@ include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 include { AlignReads } from "./modules/AlignReads.nf"
 include { CoverageDepth } from "./modules/CoverageDepth.nf"
 include { PlotCoverage } from "./modules/PlotCoverage.nf" 
-include { SortSam } from "./modules/SortSam.nf" 
-
 
 // Read and parse the CSV file
 samples = file(params.samplesheet)
