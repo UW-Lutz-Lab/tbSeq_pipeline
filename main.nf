@@ -8,6 +8,7 @@ include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 include { AlignReads } from "./modules/AlignReads.nf"
 include { CoverageDepth } from "./modules/CoverageDepth.nf"
 include { PlotCoverage } from "./modules/PlotCoverage.nf" 
+include { SortSam } from "./modules/SortSam.nf" 
 
 
 // Read and parse the CSV file
@@ -23,6 +24,16 @@ samples.withReader { reader ->
         sample_data << [ alias: alias, filepath: filepath, reference: params.reference ]
     }
 }
+
+def saveConfig(String outDir = params.outdir) {
+    def configText = workflow.config.toString()
+    def configFile = file("${outDir}/pipeline_run_config.txt")
+
+    configFile.parent.mkdirs()
+    configFile.text = configText
+    log.info "Saved used Nextflow config to ${configFile}"
+}
+
 
 process CreateOutdir {
     input:
@@ -80,5 +91,8 @@ workflow {
     read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // PlotCoverage(read_depth, aligned_sorted_reads[1])
 
+    workflow.onComplete {
+        saveConfig()
+    }
 }
 

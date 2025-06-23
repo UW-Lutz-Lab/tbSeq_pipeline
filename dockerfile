@@ -40,16 +40,26 @@ RUN pip install \
     NanoPlot
 
 # # Install SDKMAN
-RUN curl -s "https://get.sdkman.io" | bash
+# RUN curl -s "https://get.sdkman.io" | bash
 
-SHELL ["/bin/bash", "-c"]  
+# SHELL ["/bin/bash", "-c"]  
 
 # Install Java and nextflow
-RUN source "/root/.sdkman/bin/sdkman-init.sh" && \
-    sdk install java 17.0.10-tem && \
+# RUN source "/root/.sdkman/bin/sdkman-init.sh" && \
+#     sdk install java 17.0.10-tem && \
+#     curl -s https://get.nextflow.io | bash && \
+#     chmod +x nextflow && \
+#     mv nextflow /usr/local/bin
+
+# Install Java (OpenJDK 17) and Nextflow
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     curl -s https://get.nextflow.io | bash && \
     chmod +x nextflow && \
     mv nextflow /usr/local/bin
+
 
 # Install samtools
 RUN cd /opt \
