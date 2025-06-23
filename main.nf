@@ -89,8 +89,5 @@ workflow {
     read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // PlotCoverage(read_depth, aligned_sorted_reads[1])
 
-    workflow.onComplete {
-        saveConfig()
-    }
 }
 

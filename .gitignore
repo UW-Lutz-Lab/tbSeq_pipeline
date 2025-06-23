@@ -1,3 +1,6 @@
 .DS_Store
 /archive
 plannedchanges.txt
+commands.txt
+gh.txt
+run_pipeline.sh

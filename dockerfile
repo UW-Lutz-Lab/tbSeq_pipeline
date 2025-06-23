@@ -37,7 +37,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install \
     pandas \
     altair[all] \
-    NanoPlot
+    NanoPlot \
+    kaleido==0.1.*
 
 # # Install SDKMAN
 # RUN curl -s "https://get.sdkman.io" | bash
