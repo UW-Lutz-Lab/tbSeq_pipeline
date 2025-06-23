@@ -91,3 +91,11 @@ workflow {
 
 }
 
+workflow.onComplete {
+    try {
+        def outDir = params.outdir ?: "./processed_results"
+        saveConfig(outDir)
+    } catch (Exception e) {
+        log.warn "Failed to save config onComplete: ${e.message}"
+    }
+}
