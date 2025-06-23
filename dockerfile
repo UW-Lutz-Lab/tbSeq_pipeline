@@ -40,18 +40,6 @@ RUN pip install \
     NanoPlot \
     kaleido==0.1.*
 
-# # Install SDKMAN
-# RUN curl -s "https://get.sdkman.io" | bash
-
-# SHELL ["/bin/bash", "-c"]  
-
-# Install Java and nextflow
-# RUN source "/root/.sdkman/bin/sdkman-init.sh" && \
-#     sdk install java 17.0.10-tem && \
-#     curl -s https://get.nextflow.io | bash && \
-#     chmod +x nextflow && \
-#     mv nextflow /usr/local/bin
-
 # Install Java (OpenJDK 17) and Nextflow
 RUN apt-get update && \
     apt-get install -y openjdk-17-jdk && \
@@ -60,7 +48,6 @@ RUN apt-get update && \
     curl -s https://get.nextflow.io | bash && \
     chmod +x nextflow && \
     mv nextflow /usr/local/bin
-
 
 # Install samtools
 RUN cd /opt \
@@ -87,15 +74,23 @@ unzip /opt/chopper/chopper-linux.zip -d /opt/chopper && \
 chmod +x /opt/chopper/chopper && \
 rm /opt/chopper/chopper-linux.zip
 
+# # Add chopper to PATH
+# Add /opt/samtools/bin and /opt/bcftools/bin to PATH
+ENV PATH="/opt/chopper:/opt/samtools/bin:/opt/bcftools/bin:$PATH"
+
 # Install minimap2
 RUN cd /opt \
 && curl -L https://github.com/lh3/minimap2/releases/download/v2.28/minimap2-2.28_x64-linux.tar.bz2 | tar -jxvf - \
 && mv minimap2-2.28_x64-linux/minimap2 /opt/venv/bin/
 
+# Install bowtie2
+RUN cd /opt && \
+    wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.5.3/bowtie2-2.5.3-linux-x86_64.zip && \
+    unzip bowtie2-2.5.3-linux-x86_64.zip && \
+    mv bowtie2-2.5.3-linux-x86_64 bowtie2 && \
+    rm bowtie2-2.5.3-linux-x86_64.zip
 
-# # Add chopper to PATH
-# Add /opt/samtools/bin and /opt/bcftools/bin to PATH
-ENV PATH="/opt/chopper:/opt/samtools/bin:/opt/bcftools/bin:$PATH"
-
+# Add bowtie2 to PATH
+ENV PATH="/opt/bowtie2:$PATH"
 
 WORKDIR "/mnt"

@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
 include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
 include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
-include { AlignReads } from "./modules/AlignReads.nf"
+include { AlignReads } from "./modules/AlignReads_bowtie2.nf"
 include { CoverageDepth } from "./modules/CoverageDepth.nf"
 include { PlotCoverage } from "./modules/PlotCoverage.nf" 
 
