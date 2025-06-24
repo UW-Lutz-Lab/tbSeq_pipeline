@@ -3,7 +3,7 @@ process AlignReads {
 
     input:
     path reads
-    path ref
+    val read
     val read_alias
 
     output:
@@ -15,7 +15,7 @@ process AlignReads {
     script:
     """
     bash $workflow.projectDir/pipeline_scripts/AlignReads_bowtie2.sh \
-        --reference ${ref} \
+        --reference ${read.ref_filepath} \
         --reads ${reads} \
         --output ${read_alias}_aligned_bt2.sam
     """

@@ -8,12 +8,12 @@ process BamConvertQualFilter {
     val minlength
     val maxlength
     val read_alias
-    path reference
+    val reference
 
     output:
     path "${read_alias}_f${quality_level}.fastq"
     val read_alias 
-    path reference
+    val reference
     // file "${reads.baseName}_aligned.sam"
 
     // publishDir "${params.outdir}/${read_alias}", mode: 'copy'

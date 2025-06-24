@@ -14,7 +14,6 @@ process SortBamUnaligned {
     output:
     path "${read.alias}_unaligned_sorted.bam"
     val read.alias 
-    path read.ref_filepath 
 
     // publishDir "${params.outdir}/${read.alias}", mode: 'copy'
 
