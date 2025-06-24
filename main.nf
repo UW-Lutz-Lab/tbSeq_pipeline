@@ -18,14 +18,15 @@ samples.withReader { reader ->
     reader.eachLine { line ->
         def fields = line.split(',')
         def alias = fields[0]
-        def filepath = "${params.base_dir}/${fields[1]}"
-        sample_data << [ alias: alias, filepath: filepath, reference: params.reference ]
+        def read_filepath = "${params.base_dir}/${fields[1]}"
+        def ref_filepath = "${params.reference_base_dir}/${fields[2]}"
+        sample_data << [ alias: alias, read_filepath: read_filepath, ref_filepath: ref_filepath ]
     }
 }
 
-def saveConfig(String outDir = params.outdir) {
+def saveConfig() {
     def configText = workflow.config.toString()
-    def configFile = file("${outDir}/pipeline_run_config.txt")
+    def configFile = file("${params.outdir}/pipeline_run_config.txt")
 
     configFile.parent.mkdirs()
     configFile.text = configText
@@ -39,7 +40,7 @@ process CreateOutdir {
 
     script:
     """
-    mkdir -p \"/processed_results/${read.alias}\"
+    mkdir -p \"/${params.outdir}/${read.alias}\"
     """
 }
 
@@ -59,7 +60,7 @@ workflow {
         .from( sample_data )
         .set { bam_channel }
 
-    ref_ch = Channel.fromPath(params.reference)
+    // ref_ch = Channel.fromPath(params.reference)
 
 
     CreateOutdir(bam_channel)
@@ -88,7 +89,7 @@ workflow {
     NanoPlotQC_Aligned(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
     read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // PlotCoverage(read_depth, aligned_sorted_reads[1])
-
+    saveConfig()
 }
 
 // workflow.onComplete {
