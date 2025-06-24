@@ -25,12 +25,12 @@ samples.withReader { reader ->
 }
 
 def saveConfig() {
-    def configText = workflow.config.toString()
+    def configText = params.toString()   // Only user params, much safer!
     def configFile = file("${params.outdir}/pipeline_run_config.txt")
 
     configFile.parent.mkdirs()
     configFile.text = configText
-    log.info "Saved used Nextflow config to ${configFile}"
+    log.info "Saved used Nextflow params to ${configFile}"
 }
 
 
@@ -60,7 +60,7 @@ workflow {
         .from( sample_data )
         .set { bam_channel }
 
-    ref_ch = Channel.fromPath(params.reference)
+    // ref_ch = Channel.fromPath(params.reference)
 
 
     CreateOutdir(bam_channel)
