@@ -82,8 +82,8 @@ workflow {
 
     aligned_reads = AlignReads(
         filtered_fastq[0], 
-        filtered_fastq[2],
-        filtered_fastq[1])
+        filtered_fastq[1],
+        bam_channel)
 
     // aligned_sorted_reads = SortBamAligned(aligned_reads)
     aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])

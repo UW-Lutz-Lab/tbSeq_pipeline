@@ -3,8 +3,8 @@ process AlignReads {
 
     input:
     path reads
-    val read
     val read_alias
+    val read
 
     output:
     path "${read_alias}_aligned_bt2.sam"
