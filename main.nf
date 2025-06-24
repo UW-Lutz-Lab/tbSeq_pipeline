@@ -60,7 +60,7 @@ workflow {
         .from( sample_data )
         .set { bam_channel }
 
-    // ref_ch = Channel.fromPath(params.reference)
+    ref_ch = Channel.fromPath(params.reference)
 
 
     CreateOutdir(bam_channel)
