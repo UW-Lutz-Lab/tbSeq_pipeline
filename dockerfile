@@ -12,6 +12,7 @@ RUN apt-get update && \
     xz-utils \
     liblzma-dev \
     libncurses5-dev \
+    libcurl4-openssl-dev \ 
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -51,18 +52,18 @@ RUN apt-get update && \
 
 # Install samtools
 RUN cd /opt \
-&& wget https://github.com/samtools/samtools/releases/download/1.20/samtools-1.20.tar.bz2 \
-&& tar -xjf samtools-1.20.tar.bz2 \
-&& cd samtools-1.20 \
+&& wget https://github.com/samtools/samtools/releases/download/1.22/samtools-1.22.tar.bz2 \
+&& tar -xjf samtools-1.22.tar.bz2 \
+&& cd samtools-1.22 \
 && ./configure --prefix=/opt/venv \
 && make \
 && make install
 
 # Install bcftools
 RUN cd /opt \
-&& wget https://github.com/samtools/bcftools/releases/download/1.20/bcftools-1.20.tar.bz2 \
-&& tar -xjf bcftools-1.20.tar.bz2 \
-&& cd bcftools-1.20 \
+&& wget https://github.com/samtools/bcftools/releases/download/1.22/bcftools-1.22.tar.bz2 \
+&& tar -xjf bcftools-1.22.tar.bz2 \
+&& cd bcftools-1.22 \
 && ./configure --prefix=/opt/venv \
 && make \
 && make install
@@ -92,5 +93,11 @@ RUN cd /opt && \
 
 # Add bowtie2 to PATH
 ENV PATH="/opt/bowtie2:$PATH"
+
+RUN curl -L -o /usr/local/bin/VarScan.jar \
+    https://github.com/dkoboldt/varscan/releases/download/v2.4.6/VarScan.v2.4.6.jar
+
+RUN echo '#!/bin/bash\njava -jar /usr/local/bin/VarScan.jar "$@"' > /usr/local/bin/varscan \
+    && chmod +x /usr/local/bin/varscan
 
 WORKDIR "/mnt"
