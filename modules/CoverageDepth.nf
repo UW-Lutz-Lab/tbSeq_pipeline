@@ -11,7 +11,7 @@ process CoverageDepth {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    """
-    samtools depth -a ${reads} | awk '{OFS=","; print \$1, \$2, \$3}' > ${read_alias}_coverage_report.csv
-    """
+        """
+        samtools depth -a ${reads} | awk '{OFS=","; print \$1, \$2, \$3}' > ${read_alias}_coverage_report.csv
+        """
 }

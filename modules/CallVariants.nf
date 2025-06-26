@@ -1,11 +1,11 @@
-def CallVariant(
-    mpileup, output) {
-    """
-    $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-    --mpileup ${mpileup}
-    --output ${output}
-    """
-}
+// def CallVariant(
+//     mpileup, output) {
+//     """
+//     $workflow.projectDir/pipeline_scripts/CallVariants.sh \
+//     --mpileup ${mpileup}
+//     --output ${output}
+//     """
+// }
 
 process CallVariants {
 
@@ -19,6 +19,10 @@ process CallVariants {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    CallVariant(mpileup, output)
+    """
+    $workflow.projectDir/pipeline_scripts/CallVariants.sh \
+    --mpileup ${mpileup}
+    --output ${output}
+    """
 
 }

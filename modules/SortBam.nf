@@ -19,7 +19,7 @@ process SortBamUnaligned {
     // publishDir "${params.outdir}/${read.alias}", mode: 'copy'
 
     script:
-    SortBam("${read.read_filepath}", "${read.alias}_unaligned_sorted.bam")
+        SortBam("${read.read_filepath}", "${read.alias}_unaligned_sorted.bam")
 
 }
 
@@ -35,5 +35,5 @@ process SortBamAligned {
     // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    SortBam("${read}", "${read_alias}_sorted.bam")
+        SortBam("${read}", "${read_alias}_sorted.bam")
 }

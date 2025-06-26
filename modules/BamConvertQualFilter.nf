@@ -19,12 +19,12 @@ process BamConvertQualFilter {
     // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    """
-    $workflow.projectDir/pipeline_scripts/BamConvertQualFilter.sh \
-    --quality_filter ${quality_level} \
-    --reads ${reads} \
-    --minlength ${minlength} \
-    --maxlength ${maxlength} \
-    --output ${read_alias}_f${quality_level}.fastq
-    """
+        """
+        $workflow.projectDir/pipeline_scripts/BamConvertQualFilter.sh \
+        --quality_filter ${quality_level} \
+        --reads ${reads} \
+        --minlength ${minlength} \
+        --maxlength ${maxlength} \
+        --output ${read_alias}_f${quality_level}.fastq
+        """
 }

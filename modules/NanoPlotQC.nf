@@ -21,7 +21,7 @@ process NanoPlotQC_Unaligned {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    runNanoPlotQC(reads, "${reads.baseName}", input_type) 
+        runNanoPlotQC(reads, "${reads.baseName}", input_type) 
 }
 
 process NanoPlotQC_Aligned {
@@ -39,5 +39,5 @@ process NanoPlotQC_Aligned {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    runNanoPlotQC(reads, "${reads.baseName}", input_type) 
+        runNanoPlotQC(reads, "${reads.baseName}", input_type) 
 }
