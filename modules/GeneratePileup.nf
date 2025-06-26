@@ -1,4 +1,4 @@
-def GeneratePileup(
+def GenerateSamtoolsPileup(
     reference, reads, min_quality, max_depth, output) {
     """
     $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
@@ -22,7 +22,7 @@ process GeneratePileup {
     path "${read_alias}_samtools.pileup"
 
     script:
-    GeneratePileup(
+    GenerateSamtoolsPileup(
         reference, reads, min_quality, max_depth, output)
 
 }

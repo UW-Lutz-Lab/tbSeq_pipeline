@@ -1,4 +1,4 @@
-def CallVariants(
+def CallVariant(
     mpileup, output) {
     """
     $workflow.projectDir/pipeline_scripts/CallVariants.sh \
@@ -19,6 +19,6 @@ process CallVariants {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    CallVariants(mpileup, output)
+    CallVariant(mpileup, output)
 
 }

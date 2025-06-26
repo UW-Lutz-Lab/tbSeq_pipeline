@@ -1,6 +1,6 @@
-def IndexReads(reads, outfile_name) {
+def ReadIndexing(reads, outfile_name) {
     """
-    $workflow.projectDir/pipeline_scripts/SortBam.sh \
+    $workflow.projectDir/pipeline_scripts/IndexReads.sh \
     --reads ${reads}
     """
 }
@@ -18,6 +18,6 @@ process IndexReads {
     val read_alias
 
     script:
-    IndexReads("${reads}")
+    ReadIndexing("${reads}")
 
 }
