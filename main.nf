@@ -93,7 +93,7 @@ workflow {
     NanoPlotQC_Aligned(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
     read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
-    // pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2])
+    pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2])
     // PlotCoverage(read_depth, aligned_sorted_reads[1])
     saveConfig()
 }
