@@ -1,9 +1,9 @@
-// def ReadIndexing(reads, outfile_name) {
-//     """
-//     $workflow.projectDir/pipeline_scripts/IndexReads.sh \
-//     --reads ${reads}
-//     """
-// }
+def RunIndexing(reads) {
+    """
+    $workflow.projectDir/pipeline_scripts/IndexReads.sh \
+    --reads ${reads}
+    """
+}
 
 process IndexReads {
 
@@ -16,9 +16,10 @@ process IndexReads {
     val read_alias
 
     script:
-    """
-    $workflow.projectDir/pipeline_scripts/IndexReads.sh \
-    --reads ${reads}
-    """
+    RunIndexing(reads)
+    // """
+    // $workflow.projectDir/pipeline_scripts/IndexReads.sh \
+    // --reads ${reads}
+    // """
 
 }
