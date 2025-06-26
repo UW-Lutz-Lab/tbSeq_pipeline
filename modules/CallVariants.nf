@@ -14,7 +14,8 @@ process CallVariants {
     val read_alias
 
     output:
-    path "*.vcf"
+    path "*_snps.vcf"
+    path "*_indels.vcf"
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 

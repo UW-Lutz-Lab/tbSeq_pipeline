@@ -13,7 +13,5 @@ done
 
 varscan mpileup2snp "$mpileup" --min-var-freq 0.001 --min-reads2 2 --min-coverage 10 --p-value 1 --output-vcf 1 > ${output}_varscan_snps.vcf 
 
-varscan mpileup2indel "$mpileup" --min-var-freq 0.001 --min-reads2 2 --min-coverage 10 --p-value 1 --output-vcf 1 > ${output}_varscan_indels.vcf 
-
-bcftools concat -a ${output}_varscan_snps.vcf ${output}_varscan_indels.vcf -o ${output}_varscan_combined.vcf
+varscan mpileup2indel "$mpileup" --min-var-freq 0.001 --min-reads2 2 --min-coverage 10 --p-value 1 --output-vcf 1 > ${output}_varscan_indels.vcf
 
