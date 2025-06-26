@@ -18,6 +18,6 @@ process IndexReads {
     val read_alias
 
     script:
-    ReadIndexing("${reads}")
+    ReadIndexing(reads)
 
 }
