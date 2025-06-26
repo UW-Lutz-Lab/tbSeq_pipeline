@@ -1,11 +1,11 @@
-// def CallVariant(
-//     mpileup, output) {
-//     """
-//     $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-//     --mpileup ${mpileup}
-//     --output ${output}
-//     """
-// }
+def VarScan2(
+    mpileup, output) {
+    """
+    $workflow.projectDir/pipeline_scripts/CallVariants.sh \
+    --mpileup ${mpileup}
+    --output ${output}
+    """
+}
 
 process CallVariants {
 
@@ -14,7 +14,7 @@ process CallVariants {
     val read_alias
 
     output:
-    path "${read_alias}_varscan_combined.vcf"
+    path "*.vcf"
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 

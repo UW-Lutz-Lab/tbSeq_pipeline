@@ -10,6 +10,7 @@ include { CoverageDepth } from "./modules/CoverageDepth.nf"
 include { PlotCoverage } from "./modules/PlotCoverage.nf" 
 include { IndexReads } from "./modules/IndexReads.nf"
 include { GeneratePileup } from "./modules/GeneratePileup.nf"
+include { CallVariants } from "./modules/CallVariants.nf"
 
 
 // Read and parse the CSV file
@@ -94,6 +95,7 @@ workflow {
     read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
     pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2], params.quality_filter)
+    CallVariants(pileup[0], pileup[1])
     // PlotCoverage(read_depth, aligned_sorted_reads[1])
     saveConfig()
 }

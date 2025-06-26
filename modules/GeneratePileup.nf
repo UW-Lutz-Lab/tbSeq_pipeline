@@ -21,6 +21,7 @@ process GeneratePileup {
 
     output:
     path "*.pileup"
+    val read_alias
 
     script:
     SamtoolsMpileup(reference, reads, min_quality, read_alias)
