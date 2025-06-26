@@ -2,10 +2,10 @@ def SamtoolsMpileup(
     reference, reads, min_quality, output) {
     """
     $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
-    --reference ${reference}
-    --reads ${reads}
-    --min_quality ${min_quality}
-    --max_depth 30000
+    --reference ${reference} \
+    --reads ${reads} \
+    --min_quality ${min_quality} \
+    --max_depth 30000 \
     --output ${output}
     """
 }

@@ -2,7 +2,7 @@ def VarScan2(
     mpileup, output) {
     """
     $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-    --mpileup ${mpileup}
+    --mpileup ${mpileup} \
     --output ${output}
     """
 }
