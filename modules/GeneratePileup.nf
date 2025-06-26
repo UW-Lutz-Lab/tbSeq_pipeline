@@ -1,4 +1,4 @@
-// def GenerateSamtoolsPileup(
+// def SamtoolsMpileup(
 //     reference, reads, min_quality, max_depth, output) {
 //     """
 //     $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
