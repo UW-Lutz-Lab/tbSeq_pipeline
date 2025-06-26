@@ -11,10 +11,8 @@ process IndexReads {
     path reads
     val read_alias
 
-    def filename = reads.getName() 
-
     output:
-    path "${filename}.bai"
+    path "*.bai"
     val read_alias
 
     script:
