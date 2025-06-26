@@ -3,7 +3,8 @@
 nextflow.enable.dsl=2
 
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
-include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
+// include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
+include { NanoPlotQC } from "./modules/NanoPlotQC.nf"
 include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 include { AlignReads } from "./modules/AlignReads_bowtie2.nf"
 include { CoverageDepth } from "./modules/CoverageDepth.nf"
@@ -70,7 +71,7 @@ workflow {
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
-    NanoPlotQC_Unaligned(
+    NanoPlotQC(
         unaligned_sorted_reads[0], 
         "ubam", 
         unaligned_sorted_reads[1])
@@ -90,7 +91,7 @@ workflow {
 
     // aligned_sorted_reads = SortBamAligned(aligned_reads)
     aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])
-    NanoPlotQC_Aligned(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
+    NanoPlotQC(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
     read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
     pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2])
