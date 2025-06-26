@@ -10,4 +10,4 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-samtools ${reads}
+samtools index ${reads}

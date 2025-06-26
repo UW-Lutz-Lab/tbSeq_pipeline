@@ -15,6 +15,7 @@ process IndexReads {
 
     output:
     path "${filename}.bai"
+    val read_alias
 
     script:
     IndexReads("${reads}")

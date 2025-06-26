@@ -9,6 +9,7 @@ process AlignReads {
     output:
     path "${read_alias}_aligned_mm2.sam"
     val read_alias
+    path reference
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
