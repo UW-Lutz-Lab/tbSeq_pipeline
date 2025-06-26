@@ -16,7 +16,7 @@ process GeneratePileup {
     path reads
     path read_index
     val read_alias
-    val reference
+    path reference
     val min_quality
 
     output:
