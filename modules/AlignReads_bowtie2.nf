@@ -4,12 +4,12 @@ process AlignReads {
     input:
     path reads
     val read_alias
-    path reference
+    val reference
 
     output:
     path "${read_alias}_aligned_bt2.sam"
     val read_alias
-    path reference
+    val reference
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 

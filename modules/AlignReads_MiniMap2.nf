@@ -14,10 +14,10 @@ process AlignReads {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    """
-    $workflow.projectDir/pipeline_scripts/AlignReads.sh \
-    --reference ${ref} \
-    --reads ${reads} \
-    --output ${read_alias}_aligned_mm2.sam 
-    """
+        """
+        $workflow.projectDir/pipeline_scripts/AlignReads.sh \
+        --reference ${ref} \
+        --reads ${reads} \
+        --output ${read_alias}_aligned_mm2.sam 
+        """
 }
