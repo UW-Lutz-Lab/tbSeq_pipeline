@@ -1,14 +1,14 @@
-// def SamtoolsMpileup(
-//     reference, reads, min_quality, max_depth, output) {
-//     """
-//     $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
-//     --reference ${reference}
-//     --reads ${reads}
-//     --min_quality ${min_quality}
-//     --max_depth ${max_depth}
-//     --output ${output}
-//     """
-// }
+def SamtoolsMpileup(
+    reference, reads, min_quality, output) {
+    """
+    $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
+    --reference ${reference}
+    --reads ${reads}
+    --min_quality ${min_quality}
+    --max_depth 30000
+    --output ${output}
+    """
+}
 
 process GeneratePileup {
 
@@ -17,18 +17,19 @@ process GeneratePileup {
     path read_index
     val read_alias
     path reference
+    val min_quality
 
     output:
-    path "${read_alias}_samtools.pileup"
+    path "*.pileup"
 
     script:
-    """
-    $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
-    --reference ${reference}
-    --reads ${reads}
-    --min_quality ${min_quality}
-    --max_depth ${max_depth}
-    --output ${output}
-    """
+    SamtoolsMpileup(reference, reads, min_quality, read_alias)
+    // """
+    // $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
+    // --reference ${reference}
+    // --reads ${reads}
+    // --min_quality ${min_quality}
+    // --output ${read_alias}
+    // """
 
 }
