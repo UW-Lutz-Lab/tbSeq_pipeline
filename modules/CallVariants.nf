@@ -21,7 +21,7 @@ process CallVariants {
     script:
     """
     $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-    --mpileup ${mpileup}
+    --mpileup ${pileup}
     --output ${output}
     """
 
