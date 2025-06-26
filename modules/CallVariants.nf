@@ -10,7 +10,7 @@ def VarScan2(
 process CallVariants {
 
     input:
-    path pileup
+    path mpileup
     val read_alias
 
     output:
@@ -19,10 +19,10 @@ process CallVariants {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    """
-    $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-    --mpileup ${pileup}
-    --output ${output}
-    """
-
+    VarScan2(mpileup, read_alias)
+    // """
+    // $workflow.projectDir/pipeline_scripts/CallVariants.sh \
+    // --mpileup ${mpileup}
+    // --output ${read_alias}
+    // """
 }
