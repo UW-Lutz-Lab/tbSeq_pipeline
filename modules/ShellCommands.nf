@@ -1,3 +1,18 @@
+def MakeDirectory(outdir){
+    """
+    mkdir -p ${outdir}
+    """
+}
+
+def QCReads(outdir, input_type, reads){
+    """
+    NanoPlot --only-report \
+    -o ${outdir} \
+    --${input_type} \
+    ${reads} 
+    """
+}
+
 def SortBam(reads, output) {
     """
     samtools sort -o ${output} ${reads}
