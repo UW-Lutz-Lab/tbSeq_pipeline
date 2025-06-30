@@ -77,17 +77,17 @@ workflow {
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
-    qc_input = unaligned_sorted_reads.map { reads, alias, ref -> tuple(reads, "ubam", alias) }
-    NanoPlotQC_Unaligned(qc_input)
+    // qc_input = unaligned_sorted_reads.map { reads, alias, ref -> tuple(reads, "ubam", alias) }
+    // NanoPlotQC_Unaligned(qc_input)
 
     // NanoPlotQC_Unaligned(
     //     unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
     // )
 
-    // NanoPlotQC_Unaligned(
-    //     unaligned_sorted_reads[0], 
-    //     "ubam", 
-    //     unaligned_sorted_reads[1])
+    NanoPlotQC_Unaligned(
+        unaligned_sorted_reads[0], 
+        "ubam", 
+        unaligned_sorted_reads[1])
     
     // filtered_fastq = BamConvertQualFilter(
     //     unaligned_sorted_reads[0],
