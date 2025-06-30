@@ -37,11 +37,7 @@ def saveConfig() {
     configFile.text = configText
     log.info "Saved used Nextflow params to ${configFile}"
 }
-println "params.alignment_type: >${params.alignment_type}<"
-println "params.alignment_settings keys: ${params.alignment_settings.keySet().collect{ '>' + it + '<' }}"
-println "alignment_settings map: ${params.alignment_settings.inspect()}"
-align_settings = params.alignment_settings[params.alignment_type]
-println "align_settings: ${align_settings.inspect()}"
+
 // Fetch the settings for the selected alignment type
 def align_settings = params.alignment_type
 
@@ -81,8 +77,11 @@ workflow {
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
+    // NanoPlotQC_Unaligned(
+    //     unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
+    // )
     NanoPlotQC_Unaligned(
-        unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
+    unaligned_sorted_reads.map { bam, alias, ref -> tuple(bam, "ubam", alias) }
     )
 
     // NanoPlotQC_Unaligned(

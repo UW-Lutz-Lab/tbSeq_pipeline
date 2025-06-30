@@ -11,12 +11,13 @@ process NanoPlotQC_Unaligned {
     tag "NanoStats QC ${reads.baseName}"
 
     input:
-    path reads
-    val input_type // --ubam
-    val read_alias
+        tuple path(bam), val(qc_type), val(alias)
+    // path reads
+    // val input_type // --ubam
+    // val read_alias
 
     output:
-    path "${reads.baseName}_qc"
+        path "${reads.baseName}_qc"
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
