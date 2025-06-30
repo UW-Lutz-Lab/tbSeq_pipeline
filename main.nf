@@ -107,58 +107,58 @@ workflow {
     //     "ubam", 
     //     unaligned_sorted_reads[1])
 
-    bam_filter_input_channel = bam_channel.map { 
-        reads, alias, ref -> tuple(
-            reads, 
-            alias,
-            ref,
-            params.min_quality_filter,
-            params.max_quality_filter,
-            params.minlength,
-            params.maxlength
-        ) 
-    }
+    // bam_filter_input_channel = bam_channel.map { 
+    //     reads, alias, ref -> tuple(
+    //         reads, 
+    //         alias,
+    //         ref,
+    //         params.min_quality_filter,
+    //         params.max_quality_filter,
+    //         params.minlength,
+    //         params.maxlength
+    //     ) 
+    // }
     
-    filtered_fastq_channel = BamConvertQualFilter(bam_filter_input_channel)
+    // filtered_fastq_channel = BamConvertQualFilter(bam_filter_input_channel)
 
-    // filtered_fastq = BamConvertQualFilter(
-    //     unaligned_sorted_reads[0],
-    //     params.quality_filter,
-    //     params.minlength,
-    //     params.maxlength,
-    //     unaligned_sorted_reads[1],
-    //     unaligned_sorted_reads[2])
+    // // filtered_fastq = BamConvertQualFilter(
+    // //     unaligned_sorted_reads[0],
+    // //     params.quality_filter,
+    // //     params.minlength,
+    // //     params.maxlength,
+    // //     unaligned_sorted_reads[1],
+    // //     unaligned_sorted_reads[2])
 
+    // // if (params.alignment_type == 'minimap2') {
+    // //     // Run minimap2 with these specific params
+    // //     aligned_reads_channel = AlignReadsMinimap2(
+    // //         filtered_fastq[0], 
+    // //         filtered_fastq[1],
+    // //         filtered_fastq[2])
+    // // }
+    // // else if (params.alignment_type == 'bowtie2') {
+    // //     // Run alternative or with different params
+    // //     aligned_reads_channel = AlignReadsBowtie2(
+    // //         filtered_fastq[0], 
+    // //         filtered_fastq[1],
+    // //         filtered_fastq[2])
+    // // }
     // if (params.alignment_type == 'minimap2') {
     //     // Run minimap2 with these specific params
-    //     aligned_reads_channel = AlignReadsMinimap2(
-    //         filtered_fastq[0], 
-    //         filtered_fastq[1],
-    //         filtered_fastq[2])
+    //     aligned_reads_channel = Minimap2Alignment(filtered_fastq_channel)
     // }
     // else if (params.alignment_type == 'bowtie2') {
     //     // Run alternative or with different params
-    //     aligned_reads_channel = AlignReadsBowtie2(
-    //         filtered_fastq[0], 
-    //         filtered_fastq[1],
-    //         filtered_fastq[2])
+    //     aligned_reads_channel = Bowtie2Alignment(filtered_fastq_channel)
     // }
-    if (params.alignment_type == 'minimap2') {
-        // Run minimap2 with these specific params
-        aligned_reads_channel = Minimap2Alignment(filtered_fastq_channel)
-    }
-    else if (params.alignment_type == 'bowtie2') {
-        // Run alternative or with different params
-        aligned_reads_channel = Bowtie2Alignment(filtered_fastq_channel)
-    }
 
-    // // aligned_sorted_reads = SortBamAligned(aligned_reads)
-    aligned_sorted_reads_channel = SortBamAligned(aligned_reads_channel)
-    aligned_qc_input_channel = aligned_sorted_reads_channel.map { 
-        reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
-        }
+    // // // aligned_sorted_reads = SortBamAligned(aligned_reads)
+    // aligned_sorted_reads_channel = SortBamAligned(aligned_reads_channel)
+    // aligned_qc_input_channel = aligned_sorted_reads_channel.map { 
+    //     reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
+    //     }
     
-    NanoPlotQC_Aligned(aligned_qc_input_channel)
+    // NanoPlotQC_Aligned(aligned_qc_input_channel)
     // read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2], params.quality_filter)
