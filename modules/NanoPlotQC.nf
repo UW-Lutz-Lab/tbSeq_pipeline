@@ -16,24 +16,25 @@ process NanoPlotQC_Unaligned {
     tag "NanoStats QC ${reads.baseName}"
 
     input:
-        tuple(
-            path(reads), 
-            val(input_type), 
-            val(read_alias)
-        )
+        val(reads)
+        // tuple(
+        //     path(reads), 
+        //     val(input_type), 
+        //     val(read_alias)
+        // )
     // path reads
     // val input_type // --ubam
     // val read_alias
 
     output:
-        path "${read_alias}_unaligned_qc"
+        path "${reads.alias}_unaligned_qc"
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        MakeDirectory("${read_alias}_unaligned_qc")
-        SortBam("${reads.read_filepath}", "${read_alias}_unaligned_sorted.bam")
-        QCReads("${read_alias}_unaligned_qc", input_type, "${read_alias}_unaligned_sorted.bam")
+        MakeDirectory("${reads.alias}_unaligned_qc")
+        SortBam("${reads.read_filepath}", "${reads.alias}_unaligned_sorted.bam")
+        QCReads("${reads.alias}_unaligned_qc", "ubam", "${reads.alias}_unaligned_sorted.bam")
         // runNanoPlotQC(reads, "${reads.baseName}", input_type)
 }
 
