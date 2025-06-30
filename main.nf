@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
 include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
 include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
-include { AlignReads } from "./modules/AlignReads_bowtie2.nf"
+include { AlignReadsBowtie2; AlignReadsMinimap2 } from "./modules/AlignReads.nf"
 include { CoverageDepth } from "./modules/CoverageDepth.nf"
 include { PlotCoverage } from "./modules/PlotCoverage.nf" 
 include { IndexReads } from "./modules/IndexReads.nf"
@@ -37,6 +37,14 @@ def saveConfig() {
     log.info "Saved used Nextflow params to ${configFile}"
 }
 
+// Fetch the settings for the selected alignment type
+def align_settings = params.alignment_settings[params.alignment_type]
+
+// Check if the alignment type exists
+if (!align_settings) {
+    error "Alignment type '${params.alignment_type}' is not defined in the configuration. Available types: ${params.alignment_settings.keySet().join(', ')}"
+}
+
 
 process CreateOutdir {
     input:
@@ -64,9 +72,6 @@ workflow {
         .from( sample_data )
         .set { bam_channel }
 
-    // ref_ch = Channel.fromPath(params.reference)
-
-
     CreateOutdir(bam_channel)
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
@@ -84,10 +89,20 @@ workflow {
         unaligned_sorted_reads[1],
         unaligned_sorted_reads[2])
 
-    aligned_reads = AlignReads(
-        filtered_fastq[0], 
-        filtered_fastq[1],
-        filtered_fastq[2])
+    if (params.alignment_type == 'minimap2') {
+        // Run minimap2 with these specific params
+        aligned_reads = AlignReadsMinimap2(
+            filtered_fastq[0], 
+            filtered_fastq[1],
+            filtered_fastq[2])
+    }
+    else if (params.alignment_type == 'bowtie2') {
+        // Run alternative or with different params
+        aligned_reads = AlignReadsBowtie2(
+            filtered_fastq[0], 
+            filtered_fastq[1],
+            filtered_fastq[2])
+    }
 
     // aligned_sorted_reads = SortBamAligned(aligned_reads)
     aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])
