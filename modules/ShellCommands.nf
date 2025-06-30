@@ -1,8 +1,6 @@
-def SortBam(reads, outfile_name) {
+def SortBam(reads, output) {
     """
-    $workflow.projectDir/pipeline_scripts/SortBam.sh \
-    --reads ${reads} \
-    --outfile_name ${outfile_name}
+    samtools sort -o ${output} ${reads}
     """
 }
 

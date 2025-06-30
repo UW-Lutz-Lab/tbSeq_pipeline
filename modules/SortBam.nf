@@ -6,6 +6,8 @@
 //     """
 // }
 
+include { SortBam } from "./ShellCommands.nf"
+
 process SortBamUnaligned {
 
     input:
@@ -20,7 +22,7 @@ process SortBamUnaligned {
     // publishDir "${params.outdir}/${read.alias}", mode: 'copy'
 
     script:
-        SortBam("${read.read_filepath}", "${read.alias}_unaligned_sorted.bam")
+        SortBam($read.read_filepath, "${read.alias}_unaligned_sorted.bam")
 
 }
 
