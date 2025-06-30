@@ -40,9 +40,11 @@ process NanoPlotQC_Aligned {
     tag "NanoStats QC ${reads.baseName}"
 
     input:
-    path reads
-    val input_type // --bam
-    val read_alias
+        tuple(
+            path(reads), 
+            val(input_type), 
+            val(read_alias)
+        )
 
     output:
     path "${reads.baseName}_qc"
