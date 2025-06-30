@@ -130,11 +130,11 @@ workflow {
     // }
     if (params.alignment_type == 'minimap2') {
         // Run minimap2 with these specific params
-        aligned_reads_channel = AlignReadsMinimap2(filtered_fastq_channel)
+        aligned_reads_channel = Minimap2Alignment(filtered_fastq_channel)
     }
     else if (params.alignment_type == 'bowtie2') {
         // Run alternative or with different params
-        aligned_reads_channel = AlignReadsBowtie2(filtered_fastq_channel)
+        aligned_reads_channel = Bowtie2Alignment(filtered_fastq_channel)
     }
 
     // // aligned_sorted_reads = SortBamAligned(aligned_reads)
