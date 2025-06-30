@@ -80,7 +80,9 @@ workflow {
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
-    unaligned_qc_input_channel = unaligned_sorted_reads.map { reads, alias, ref -> tuple(reads, "ubam", alias) }
+    unaligned_qc_input_channel = unaligned_sorted_reads.map { 
+        reads, alias, ref -> tuple(reads, "ubam", alias) 
+        }
     NanoPlotQC_Unaligned(unaligned_qc_input_channel)
 
     // NanoPlotQC_Unaligned(
@@ -138,8 +140,12 @@ workflow {
     }
 
     // // aligned_sorted_reads = SortBamAligned(aligned_reads)
-    // aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])
-    // NanoPlotQC_Aligned(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
+    aligned_sorted_reads_channel = SortBamAligned(aligned_reads_channel)
+    aligned_qc_input_channel = aligned_sorted_reads_channel.map { 
+        reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
+        }
+    
+    NanoPlotQC_Aligned(aligned_qc_input_channel)
     // read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
     // pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2], params.quality_filter)

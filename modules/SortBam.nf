@@ -29,15 +29,25 @@ process SortBamUnaligned {
 
 process SortBamAligned {
     input:
-    path read
-    val read_alias
+        tuple(
+            path(reads),
+            val(read_alias),
+            val(reference)
+        )
 
     output:
-    path "${read_alias}_sorted.bam"
-    val read_alias
+        tuple(
+            path("${read_alias}_sorted.bam"),
+            val(read_alias),
+            val(reference)
+        )
+
+    // output:
+    // path "${read_alias}_sorted.bam"
+    // val read_alias
 
     // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        SortBam("${read}", "${read_alias}_sorted.bam")
+        SortBam("${reads}", "${read_alias}_sorted.bam")
 }
