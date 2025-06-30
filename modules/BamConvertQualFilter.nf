@@ -60,20 +60,20 @@ process BamConvertQualFilter {
 
     input:
         tuple(
-            path reads,
-            val read_alias,
-            val reference,
-            val min_quality_filter,
-            val max_quality_filter,
-            val minlength,
-            val maxlength
+            path(reads),
+            val(read_alias),
+            val(reference),
+            val(min_quality_filter),
+            val(max_quality_filter),
+            val(minlength),
+            val(maxlength)
         )
 
     output:
         tuple(
-            path "${read_alias}_f${min_quality_filter}.fastq",
-            val read_alias,
-            val reference
+            path("${read_alias}_f${min_quality_filter}.fastq"),
+            val(read_alias),
+            val(reference)
         )
 
     script:
