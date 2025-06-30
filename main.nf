@@ -3,14 +3,15 @@
 nextflow.enable.dsl=2
 
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
-include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
-include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
-include { AlignReadsBowtie2; AlignReadsMinimap2 } from "./modules/AlignReads.nf"
-include { CoverageDepth } from "./modules/CoverageDepth.nf"
-include { PlotCoverage } from "./modules/PlotCoverage.nf" 
-include { IndexReads } from "./modules/IndexReads.nf"
-include { GeneratePileup } from "./modules/GeneratePileup.nf"
-include { CallVariants } from "./modules/CallVariants.nf"
+include { NanoPlotQC_Unaligned } from "./modules/NanoPlotQC.nf"
+// include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
+// include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
+// include { AlignReadsBowtie2; AlignReadsMinimap2 } from "./modules/AlignReads.nf"
+// include { CoverageDepth } from "./modules/CoverageDepth.nf"
+// include { PlotCoverage } from "./modules/PlotCoverage.nf" 
+// include { IndexReads } from "./modules/IndexReads.nf"
+// include { GeneratePileup } from "./modules/GeneratePileup.nf"
+// include { CallVariants } from "./modules/CallVariants.nf"
 
 
 // Read and parse the CSV file
@@ -77,42 +78,46 @@ workflow {
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
     NanoPlotQC_Unaligned(
-        unaligned_sorted_reads[0], 
-        "ubam", 
-        unaligned_sorted_reads[1])
+        unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
+    )
+
+    // NanoPlotQC_Unaligned(
+    //     unaligned_sorted_reads[0], 
+    //     "ubam", 
+    //     unaligned_sorted_reads[1])
     
-    filtered_fastq = BamConvertQualFilter(
-        unaligned_sorted_reads[0],
-        params.quality_filter,
-        params.minlength,
-        params.maxlength,
-        unaligned_sorted_reads[1],
-        unaligned_sorted_reads[2])
+    // filtered_fastq = BamConvertQualFilter(
+    //     unaligned_sorted_reads[0],
+    //     params.quality_filter,
+    //     params.minlength,
+    //     params.maxlength,
+    //     unaligned_sorted_reads[1],
+    //     unaligned_sorted_reads[2])
 
-    if (params.alignment_type == 'minimap2') {
-        // Run minimap2 with these specific params
-        aligned_reads = AlignReadsMinimap2(
-            filtered_fastq[0], 
-            filtered_fastq[1],
-            filtered_fastq[2])
-    }
-    else if (params.alignment_type == 'bowtie2') {
-        // Run alternative or with different params
-        aligned_reads = AlignReadsBowtie2(
-            filtered_fastq[0], 
-            filtered_fastq[1],
-            filtered_fastq[2])
-    }
+    // if (params.alignment_type == 'minimap2') {
+    //     // Run minimap2 with these specific params
+    //     aligned_reads = AlignReadsMinimap2(
+    //         filtered_fastq[0], 
+    //         filtered_fastq[1],
+    //         filtered_fastq[2])
+    // }
+    // else if (params.alignment_type == 'bowtie2') {
+    //     // Run alternative or with different params
+    //     aligned_reads = AlignReadsBowtie2(
+    //         filtered_fastq[0], 
+    //         filtered_fastq[1],
+    //         filtered_fastq[2])
+    // }
 
-    // aligned_sorted_reads = SortBamAligned(aligned_reads)
-    aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])
-    NanoPlotQC_Aligned(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
-    read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
-    index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
-    pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2], params.quality_filter)
-    CallVariants(pileup[0], pileup[1])
-    // PlotCoverage(read_depth, aligned_sorted_reads[1])
-    saveConfig()
+    // // aligned_sorted_reads = SortBamAligned(aligned_reads)
+    // aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])
+    // NanoPlotQC_Aligned(aligned_sorted_reads[0], "bam", aligned_sorted_reads[1])
+    // read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
+    // index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
+    // pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2], params.quality_filter)
+    // CallVariants(pileup[0], pileup[1])
+    // // PlotCoverage(read_depth, aligned_sorted_reads[1])
+    // saveConfig()
 }
 
 // workflow.onComplete {
