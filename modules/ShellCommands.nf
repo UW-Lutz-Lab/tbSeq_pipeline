@@ -44,8 +44,10 @@ def BuildBowtieRefIndex(reference) {
     """
 }
 
-def AlignWithBowtie2(reads, output) {
+def AlignWithBowtie2(reads, output, reference) {
     """
+    # Build bowtie2 index
+    bowtie2-build ${reference} "ref_index"
     # Align reads
     bowtie2 -x "ref_index" \
     -U ${reads} \
