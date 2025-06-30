@@ -6,7 +6,7 @@ include {
     } from "./ShellCommands.nf"
 
 
-process AlignReadsBowtie2 {
+process Bowtie2Alignment {
     tag "Aligning w/ bowtie2 ${reads.baseName}"
 
     input:
@@ -32,7 +32,7 @@ process AlignReadsBowtie2 {
         // """
 }
 
-process AlignReadsMinimap2 {
+process Minimap2Alignment {
     tag "Aligning with minimap2 ${reads.baseName}"
 
     input:
