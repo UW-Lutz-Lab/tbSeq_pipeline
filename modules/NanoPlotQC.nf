@@ -47,7 +47,7 @@ process NanoPlotQC_Aligned {
         )
 
     output:
-    path "${reads.baseName}_qc"
+        path("${read_alias}_aligned_qc")
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
