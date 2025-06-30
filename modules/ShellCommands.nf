@@ -4,7 +4,6 @@ def SortBam(reads, output) {
     """
 }
 
-
 // bowtie 2
 def BuildBowtieRefIndex(reference) {
     """
