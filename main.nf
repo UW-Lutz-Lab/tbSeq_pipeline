@@ -116,18 +116,26 @@ workflow {
 
     // if (params.alignment_type == 'minimap2') {
     //     // Run minimap2 with these specific params
-    //     aligned_reads = AlignReadsMinimap2(
+    //     aligned_reads_channel = AlignReadsMinimap2(
     //         filtered_fastq[0], 
     //         filtered_fastq[1],
     //         filtered_fastq[2])
     // }
     // else if (params.alignment_type == 'bowtie2') {
     //     // Run alternative or with different params
-    //     aligned_reads = AlignReadsBowtie2(
+    //     aligned_reads_channel = AlignReadsBowtie2(
     //         filtered_fastq[0], 
     //         filtered_fastq[1],
     //         filtered_fastq[2])
     // }
+    if (params.alignment_type == 'minimap2') {
+        // Run minimap2 with these specific params
+        aligned_reads_channel = AlignReadsMinimap2(filtered_fastq_channel)
+    }
+    else if (params.alignment_type == 'bowtie2') {
+        // Run alternative or with different params
+        aligned_reads_channel = AlignReadsBowtie2(filtered_fastq_channel)
+    }
 
     // // aligned_sorted_reads = SortBamAligned(aligned_reads)
     // aligned_sorted_reads = SortBamAligned(aligned_reads[0], aligned_reads[1])
