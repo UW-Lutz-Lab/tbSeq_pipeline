@@ -63,7 +63,7 @@ process Bowtie2Alignment {
 
     script:
         BuildBowtieRefIndex(reference)
-        AlignReadsBowtie2(reads, "${read_alias}_bt2_aligned.sam")
+        AlignWithBowtie2(reads, "${read_alias}_bt2_aligned.sam")
 }
 
 process Minimap2Alignment {
