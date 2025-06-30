@@ -1,4 +1,4 @@
-Bam2FqQualLenFilter(
+def Bam2FqQualLenFilter(
     reads,
     output,
     min_quality_filter,
