@@ -1,10 +1,10 @@
-def SortBam(reads, outfile_name) {
-    """
-    $workflow.projectDir/pipeline_scripts/SortBam.sh \
-    --reads ${reads} \
-    --outfile_name ${outfile_name}
-    """
-}
+// def SortBam(reads, outfile_name) {
+//     """
+//     $workflow.projectDir/pipeline_scripts/SortBam.sh \
+//     --reads ${reads} \
+//     --outfile_name ${outfile_name}
+//     """
+// }
 
 process SortBamUnaligned {
 
