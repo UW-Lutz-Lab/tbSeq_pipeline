@@ -9,6 +9,7 @@
 
 include { 
     MakeDirectory;
+    SortBam;
     QCReads } from "./ShellCommands.nf"
 
 process NanoPlotQC_Unaligned {
@@ -31,7 +32,8 @@ process NanoPlotQC_Unaligned {
 
     script:
         MakeDirectory("${read_alias}_unaligned_qc")
-        QCReads("${read_alias}_unaligned_qc", input_type, reads)
+        SortBam("${reads.read_filepath}", "${read_alias}_unaligned_sorted.bam")
+        QCReads("${read_alias}_unaligned_qc", input_type, "${read_alias}_unaligned_sorted.bam")
         // runNanoPlotQC(reads, "${reads.baseName}", input_type)
 }
 

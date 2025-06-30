@@ -78,11 +78,18 @@ workflow {
 
     CreateOutdir(outdir_channel)
 
+    // unaligned_sorted_reads = SortBamUnaligned(bam_channel)
+
+    // unaligned_qc_input_channel = unaligned_sorted_reads.map { 
+    //     reads, alias, ref -> tuple(reads, "ubam", alias) 
+    //     }
+
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
-    unaligned_qc_input_channel = unaligned_sorted_reads.map { 
+    unaligned_qc_input_channel = bam_channel.map { 
         reads, alias, ref -> tuple(reads, "ubam", alias) 
         }
+
     NanoPlotQC_Unaligned(unaligned_qc_input_channel)
 
     // NanoPlotQC_Unaligned(
