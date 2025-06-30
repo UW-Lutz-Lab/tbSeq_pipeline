@@ -3,8 +3,8 @@
 nextflow.enable.dsl=2
 
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
-include { NanoPlotQC_Unaligned } from "./modules/NanoPlotQC.nf"
-// include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
+// include { NanoPlotQC_Unaligned } from "./modules/NanoPlotQC.nf"
+include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
 include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 include { Bowtie2Alignment; Minimap2Alignment } from "./modules/AlignReads.nf"
 // include { CoverageDepth } from "./modules/CoverageDepth.nf"
