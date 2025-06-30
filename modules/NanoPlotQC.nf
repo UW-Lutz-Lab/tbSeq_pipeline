@@ -23,12 +23,6 @@ process NanoPlotQC_Unaligned {
 
     script:
         runNanoPlotQC(reads, "${reads.baseName}", input_type)
-    // """
-    // $workflow.projectDir/pipeline_scripts/NanoPlotQC.sh \
-    // --reads ${reads} \
-    // --input_type ${input_type} \
-    // --out_dir ${reads.baseName}_qc
-    // """
 }
 
 process NanoPlotQC_Aligned {
