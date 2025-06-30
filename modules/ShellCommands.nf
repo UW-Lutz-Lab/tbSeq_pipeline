@@ -6,11 +6,11 @@ Bam2FqQualLenFilter(
     minlength,
     maxlength) {
     """
-    samtools bam2fq "$reads" | chopper \
-    --quality "$min_quality_filter" \
-    --maxqual "$max_quality_filter" \
-    --minlength "$minlength" \
-    --maxlength "$maxlength" > "$output"
+    samtools bam2fq "${reads}" | chopper \
+    --quality "${min_quality_filter}" \
+    --maxqual "${max_quality_filter}" \
+    --minlength "${minlength}" \
+    --maxlength "${maxlength}" > "${output}"
     """
 }
 
