@@ -92,9 +92,9 @@ workflow {
     //     "ubam", 
     //     unaligned_sorted_reads[1])
 
-    bam_filter_inputs = unaligned_sorted_reads.map { 
-        reads, alias, ref -> tuple(reads, "ubam", alias) 
-        }
+    // bam_filter_inputs = unaligned_sorted_reads.map { 
+    //     reads, alias, ref -> tuple(reads, "ubam", alias) 
+    //     }
     
     // filtered_fastq = BamConvertQualFilter(
     //     unaligned_sorted_reads[0],
