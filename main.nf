@@ -49,11 +49,11 @@ if (!align_settings) {
 
 process CreateOutdir {
     input:
-    val read
+    val read_alias
 
     script:
     """
-    mkdir -p \"/${params.outdir}/${read.alias}\"
+    mkdir -p \"/${params.outdir}/${read_alias}\"
     """
 }
 
