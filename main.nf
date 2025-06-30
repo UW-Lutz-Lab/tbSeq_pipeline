@@ -101,7 +101,7 @@ workflow {
     //     "ubam", 
     //     unaligned_sorted_reads[1])
 
-    bam_filter_input_channel = unaligned_sorted_reads.map { 
+    bam_filter_input_channel = bam_channel.map { 
         reads, alias, ref -> tuple(
             reads, 
             alias,

@@ -1,4 +1,6 @@
-include { Bam2FqQualLenFilter } from "./ShellCommands.nf"
+include { 
+    Bam2FqQualLenFilter;
+    SortBam } from "./ShellCommands.nf"
 
 process BamConvertQualFilter {
     tag "Converting ${reads.baseName} to Fastq"
@@ -22,8 +24,9 @@ process BamConvertQualFilter {
         )
 
     script:
+        SortBam(reads, "${reads.baseName}_sorted")
         Bam2FqQualLenFilter(
-            reads,
+            "${reads.baseName}_sorted",
             "${read_alias}_f${min_quality_filter}.fastq",
             min_quality_filter,
             max_quality_filter,
