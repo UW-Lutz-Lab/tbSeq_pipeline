@@ -87,10 +87,10 @@ workflow {
     //     unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
     // )
 
-    NanoPlotQC_Unaligned(
-        unaligned_sorted_reads[0], 
-        "ubam", 
-        unaligned_sorted_reads[1])
+    // NanoPlotQC_Unaligned(
+    //     unaligned_sorted_reads[0], 
+    //     "ubam", 
+    //     unaligned_sorted_reads[1])
     
     // filtered_fastq = BamConvertQualFilter(
     //     unaligned_sorted_reads[0],
