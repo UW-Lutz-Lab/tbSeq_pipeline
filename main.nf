@@ -73,7 +73,10 @@ workflow {
         .from( sample_data )
         .set { bam_channel }
 
-    CreateOutdir(bam_channel)
+    bam_channel.map { it.alias }
+        .set { outdir_channel }
+
+    CreateOutdir(outdir_channel)
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
