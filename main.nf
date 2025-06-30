@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
 include { NanoPlotQC_Unaligned } from "./modules/NanoPlotQC.nf"
 // include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
-// include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
+include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 // include { Bowtie2Alignment; Minimap2Alignment } from "./modules/AlignReads.nf"
 // include { CoverageDepth } from "./modules/CoverageDepth.nf"
 // include { PlotCoverage } from "./modules/PlotCoverage.nf" 
@@ -80,8 +80,8 @@ workflow {
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
-    unaligned_qc_input = unaligned_sorted_reads.map { reads, alias, ref -> tuple(reads, "ubam", alias) }
-    NanoPlotQC_Unaligned(unaligned_qc_input)
+    unaligned_qc_input_channel = unaligned_sorted_reads.map { reads, alias, ref -> tuple(reads, "ubam", alias) }
+    NanoPlotQC_Unaligned(unaligned_qc_input_channel)
 
     // NanoPlotQC_Unaligned(
     //     unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
@@ -92,10 +92,20 @@ workflow {
     //     "ubam", 
     //     unaligned_sorted_reads[1])
 
-    // bam_filter_inputs = unaligned_sorted_reads.map { 
-    //     reads, alias, ref -> tuple(reads, "ubam", alias) 
-    //     }
+    bam_filter_input_channel = unaligned_sorted_reads.map { 
+        reads, alias, ref -> tuple(
+            reads, 
+            alias,
+            ref,
+            params.min_quality_filter,
+            params.max_quality_filter,
+            params.minlength,
+            params.maxlength
+        ) 
+    }
     
+    filtered_fastq_channel = BamConvertQualFilter(bam_filter_input_channel)
+
     // filtered_fastq = BamConvertQualFilter(
     //     unaligned_sorted_reads[0],
     //     params.quality_filter,
