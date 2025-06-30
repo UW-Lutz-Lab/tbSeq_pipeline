@@ -87,7 +87,7 @@ workflow {
     // unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
     bam_channel.map { sample -> tuple(
-        sample.read_filepath, 
+        file(sample.read_filepath), 
         "ubam", 
         sample.alias ) 
         } .set { unaligned_qc_input_channel }
