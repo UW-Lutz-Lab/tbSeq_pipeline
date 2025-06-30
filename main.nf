@@ -87,7 +87,7 @@ workflow {
     // unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
     unaligned_qc_input_channel = bam_channel.map { 
-        reads, alias, ref -> tuple(reads, "ubam", alias) 
+        alias, read_filepath, ref_filepath -> tuple(alias, "ubam", read_filepath) 
         }
 
     NanoPlotQC_Unaligned(unaligned_qc_input_channel)
