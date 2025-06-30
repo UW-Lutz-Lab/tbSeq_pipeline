@@ -13,7 +13,7 @@ include {
     QCReads } from "./ShellCommands.nf"
 
 process NanoPlotQC_Unaligned {
-    tag "NanoStats QC ${reads.baseName}"
+    tag "NanoStats QC ${reads}"
 
     input:
         // val(reads)
