@@ -14,10 +14,10 @@ process SortBamUnaligned {
     val read
 
     output:
-    path "${read.alias}_unaligned_sorted.bam"
-    val read.alias 
-    val "${read.ref_filepath}"
-    // tuple path("${read.alias}_unaligned_sorted.bam"), val(read.alias), val("${read.ref_filepath}")
+    // path "${read.alias}_unaligned_sorted.bam"
+    // val read.alias 
+    // val "${read.ref_filepath}"
+    tuple path("${read.alias}_unaligned_sorted.bam"), val(read.alias), val("${read.ref_filepath}")
 
     // publishDir "${params.outdir}/${read.alias}", mode: 'copy'
 
