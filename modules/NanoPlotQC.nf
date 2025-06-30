@@ -27,14 +27,14 @@ process NanoPlotQC_Unaligned {
     // val read_alias
 
     output:
-        path "${reads.alias}_unaligned_qc"
+        path "${read_alias}_unaligned_qc"
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        MakeDirectory("${reads.alias}_unaligned_qc")
-        SortBam("${reads.read_filepath}", "${reads.alias}_unaligned_sorted.bam")
-        QCReads("${reads.alias}_unaligned_qc", "ubam", "${reads.alias}_unaligned_sorted.bam")
+        MakeDirectory("${read_alias}_unaligned_qc")
+        SortBam("${reads.read_filepath}", "${read_alias}_unaligned_sorted.bam")
+        QCReads("${read_alias}_unaligned_qc", "ubam", "${read_alias}_unaligned_sorted.bam")
         // runNanoPlotQC(reads, "${reads.baseName}", input_type)
 }
 
