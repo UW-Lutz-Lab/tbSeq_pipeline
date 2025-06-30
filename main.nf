@@ -77,7 +77,7 @@ workflow {
 
     unaligned_sorted_reads = SortBamUnaligned(bam_channel)
 
-    qc_input = unaligned_sorted_reads.map { bam, alias, ref -> tuple(bam, "ubam", alias) }
+    qc_input = unaligned_sorted_reads.map { reads, alias, ref -> tuple(reads, "ubam", alias) }
     NanoPlotQC_Unaligned(qc_input)
 
     // NanoPlotQC_Unaligned(
