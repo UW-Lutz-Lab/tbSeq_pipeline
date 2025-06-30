@@ -1,30 +1,54 @@
+include { Bam2FqQualLenFilter } from "./ShellCommands.nf"
+
 process BamConvertQualFilter {
     tag "Converting ${reads.baseName} to Fastq"
 
     input:
-    path reads
-    // val reads
-    val quality_level
-    val minlength
-    val maxlength
-    val read_alias
-    val reference
+        tuple(
+            path reads,
+            val read_alias,
+            val reference,
+            val min_quality_filter,
+            val max_quality_filter,
+            val minlength,
+            val maxlength
+        ) 
+    // path reads
+    // // val reads
+    // val read_alias
+    // val reference
+    // val quality_level
+    // val minlength
+    // val maxlength
 
     output:
-    path "${read_alias}_f${quality_level}.fastq"
-    val read_alias 
-    val reference
+        tuple(
+            path "${read_alias}_f${quality_level}.fastq",
+            val read_alias,
+            val reference
+        )
+    // path "${read_alias}_f${quality_level}.fastq"
+    // val read_alias 
+    // val reference
     // file "${reads.baseName}_aligned.sam"
 
     // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        """
-        $workflow.projectDir/pipeline_scripts/BamConvertQualFilter.sh \
-        --quality_filter ${quality_level} \
-        --reads ${reads} \
-        --minlength ${minlength} \
-        --maxlength ${maxlength} \
-        --output ${read_alias}_f${quality_level}.fastq
-        """
+        Bam2FqQualLenFilter(
+            reads,
+            "${read_alias}_f${min_quality_filter}.fastq",
+            min_quality_filter,
+            max_quality_filter,
+            minlength,
+            maxlength
+        )
+        // """
+        // $workflow.projectDir/pipeline_scripts/BamConvertQualFilter.sh \
+        // --quality_filter ${quality_level} \
+        // --reads ${reads} \
+        // --minlength ${minlength} \
+        // --maxlength ${maxlength} \
+        // --output ${read_alias}_f${quality_level}.fastq
+        // """
 }

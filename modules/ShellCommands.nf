@@ -1,3 +1,20 @@
+Bam2FqQualLenFilter(
+    reads,
+    output,
+    min_quality_filter,
+    max_quality_filter,
+    minlength,
+    maxlength) {
+    """
+    samtools bam2fq "$reads" | chopper \
+    --quality "$min_quality_filter" \
+    --maxqual "$max_quality_filter" \
+    --minlength "$minlength" \
+    --maxlength "$maxlength" > "$output"
+    """
+}
+
+
 def MakeDirectory(outdir){
     """
     mkdir -p ${outdir}
