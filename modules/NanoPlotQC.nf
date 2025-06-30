@@ -52,7 +52,8 @@ process NanoPlotQC_Aligned {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        runNanoPlotQC(reads, "${reads.baseName}", input_type)
+        QCReads("${read_alias}_aligned_qc", input_type, reads)
+        // runNanoPlotQC(reads, "${reads.baseName}", input_type)
     // """
     // $workflow.projectDir/pipeline_scripts/NanoPlotQC.sh \
     // --reads ${reads} \
