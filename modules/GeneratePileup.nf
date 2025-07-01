@@ -27,8 +27,6 @@ process GeneratePileup {
         val read_alias,
         val reference,
     )
-    path "*.pileup"
-    val read_alias
 
     script:
         """
