@@ -8,8 +8,8 @@ process CoverageDepth {
     input:
         tuple(
             path(reads), 
-            val(read_alias)
-            val(reference), 
+            val(read_alias),
+            val(reference)
         )
 
     output:
