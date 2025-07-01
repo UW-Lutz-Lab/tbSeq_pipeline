@@ -35,6 +35,7 @@ process GeneratePileup {
 
     script:
     """
-        ${SamtoolsMpileup("${reference}", "${reads}", "${min_quality}", 30000, "${read_alias}")}    
+        ${SortBam("${reads}", "${read_alias}_mp_aligned_sorted.bam")}
+        ${SamtoolsMpileup("${reference}", "${read_alias}_mp_aligned_sorted.bam", "${min_quality}", 30000, "${read_alias}")}    
     """
 }
