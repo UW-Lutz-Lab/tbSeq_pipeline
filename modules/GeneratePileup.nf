@@ -13,31 +13,23 @@ def SamtoolsMpileup(
 process GeneratePileup {
 
     input:
-    tuple(
-        path reads,
-        path read_index,
-        val read_alias,
-        val reference,
-        val min_quality
-    )
+        tuple(
+            path(reads),
+            path(read_index),
+            val(read_alias),
+            val(reference),
+            val(min_quality)
+        )
 
     output:
-    tuple(
-        path "*.pileup",
-        val read_alias,
-        val reference,
-    )
+        tuple(
+            path("*.pileup"),
+            val(read_alias),
+            val(reference),
+        )
 
     script:
         """
         ${SamtoolsMpileup(reference, reads, min_quality, read_alias)}    
         """
-    // """
-    // $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
-    // --reference ${reference}
-    // --reads ${reads}
-    // --min_quality ${min_quality}
-    // --output ${read_alias}
-    // """
-
 }
