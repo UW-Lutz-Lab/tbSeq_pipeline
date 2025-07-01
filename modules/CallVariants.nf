@@ -22,7 +22,7 @@ process CallVarscan {
         )
 
     output:
-        path "${read_alias}_varscan_concat.vcf.gz"
+        path("*.vcf")
     
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
