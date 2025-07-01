@@ -61,9 +61,9 @@ def SortBam(reads, output) {
 }
 
 // bowtie 2
-def BuildBowtieRefIndex(reference, ref_index="ref_index") {
-    return "bowtie2-build ${reference} ${ref_index}"
-}
+// def BuildBowtieRefIndex(reference, ref_index="ref_index") {
+//     return "bowtie2-build ${reference} ${ref_index}"
+// }
 
 // def AlignWithBowtie2(reads, output, reference) {
 //     """
@@ -79,10 +79,12 @@ def BuildBowtieRefIndex(reference, ref_index="ref_index") {
 
 def AlignWithBowtie2(reads, output, reference, ref_index="ref_index") {
     return """
+    # Build bowtie2 index
+    bowtie2-build ${reference} ${ref_index}
     # Align reads
-    bowtie2 -x ${ref_index} \\
-        -U ${reads} \\
-        -S ${output} \\
+    bowtie2 -x ${ref_index} \
+        -U ${reads} \
+        -S ${output} \
         --very-sensitive-local
     """.stripIndent().trim()
 }
