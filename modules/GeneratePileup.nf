@@ -24,7 +24,9 @@ process GeneratePileup {
     val read_alias
 
     script:
-    SamtoolsMpileup(reference, reads, min_quality, read_alias)
+        """
+        ${SamtoolsMpileup(reference, reads, min_quality, read_alias)}    
+        """
     // """
     // $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
     // --reference ${reference}
