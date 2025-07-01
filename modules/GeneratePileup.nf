@@ -13,13 +13,20 @@ def SamtoolsMpileup(
 process GeneratePileup {
 
     input:
-    path reads
-    path read_index
-    val read_alias
-    val reference
-    val min_quality
+    tuple(
+        path reads,
+        path read_index,
+        val read_alias,
+        val reference,
+        val min_quality
+    )
 
     output:
+    tuple(
+        path "*.pileup",
+        val read_alias,
+        val reference,
+    )
     path "*.pileup"
     val read_alias
 
