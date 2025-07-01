@@ -19,6 +19,6 @@ process CoverageDepth {
 
     script:
     """
-        ${DetermineCoverage("${reads}", ${read_alias})}
+        ${DetermineCoverage("${reads}", "${read_alias}")}
     """
 }
