@@ -16,7 +16,7 @@ process CoverageDepth {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        """
+    """
         ${DetermineCoverage("${reads}", ${read_alias})}
-        """
+    """
 }

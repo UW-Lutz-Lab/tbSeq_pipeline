@@ -7,10 +7,10 @@ include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
 include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
 include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 include { Bowtie2Alignment; Minimap2Alignment } from "./modules/AlignReads.nf"
-// include { CoverageDepth } from "./modules/CoverageDepth.nf"
+include { CoverageDepth } from "./modules/CoverageDepth.nf"
 // include { PlotCoverage } from "./modules/PlotCoverage.nf" 
-// include { IndexReads } from "./modules/IndexReads.nf"
-// include { GeneratePileup } from "./modules/GeneratePileup.nf"
+include { IndexReads } from "./modules/IndexReads.nf"
+include { GeneratePileup } from "./modules/GeneratePileup.nf"
 // include { CallVariants } from "./modules/CallVariants.nf"
 
 
