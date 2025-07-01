@@ -62,7 +62,7 @@ process Bowtie2Alignment {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        // BuildBowtieRefIndex(reference)
+        BuildBowtieRefIndex(reference)
         AlignWithBowtie2(reads, "${read_alias}_bt2_aligned.sam", reference)
 }
 

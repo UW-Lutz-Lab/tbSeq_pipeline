@@ -1,18 +1,36 @@
+// def Bam2FqQualLenFilter(
+//     reads,
+//     output,
+//     min_quality_filter,
+//     max_quality_filter,
+//     minlength,
+//     maxlength) {
+//     """
+//     samtools bam2fq "${reads}" | chopper \
+//     --quality "${min_quality_filter}" \
+//     --maxqual "${max_quality_filter}" \
+//     --minlength "${minlength}" \
+//     --maxlength "${maxlength}" > "${output}"
+//     """
+// }
+
 def Bam2FqQualLenFilter(
     reads,
     output,
     min_quality_filter,
     max_quality_filter,
     minlength,
-    maxlength) {
-    """
+    maxlength
+) {
+    return """
     samtools bam2fq "${reads}" | chopper \
-    --quality "${min_quality_filter}" \
-    --maxqual "${max_quality_filter}" \
-    --minlength "${minlength}" \
-    --maxlength "${maxlength}" > "${output}"
-    """
+        --quality "${min_quality_filter}" \
+        --maxqual "${max_quality_filter}" \
+        --minlength "${minlength}" \
+        --maxlength "${maxlength}" > "${output}"
+    """.stripIndent().trim()
 }
+
 
 
 def MakeDirectory(outdir){
@@ -43,29 +61,37 @@ def SortBam(reads, output) {
 }
 
 // bowtie 2
-def BuildBowtieRefIndex(reference) {
-    """
-    # Build bowtie2 index
-    bowtie2-build ${reference} "ref_index"
-    """
+def BuildBowtieRefIndex(reference, ref_index="ref_index") {
+    return "bowtie2-build ${reference} ${ref_index}"
 }
 
-def AlignWithBowtie2(reads, output, reference) {
-    """
-    # Build bowtie2 index
-    bowtie2-build ${reference} "ref_index"
+// def AlignWithBowtie2(reads, output, reference) {
+//     """
+//     # Build bowtie2 index
+//     bowtie2-build ${reference} "ref_index"
+//     # Align reads
+//     bowtie2 -x "ref_index" \
+//     -U ${reads} \
+//     -S ${output} \
+//     --very-sensitive-local    
+//     """
+// }
+
+def AlignWithBowtie2(reads, output, reference, ref_index="ref_index") {
+    return """
     # Align reads
-    bowtie2 -x "ref_index" \
-    -U ${reads} \
-    -S ${output} \
-    --very-sensitive-local    
-    """
+    bowtie2 -x ${ref_index} \\
+        -U ${reads} \\
+        -S ${output} \\
+        --very-sensitive-local
+    """.stripIndent().trim()
 }
+
 
 // minimap2
 def AlignWithMinimap2(k, w, reference, reads, output) {
-    """
+    return """
     minimap2 -k ${k} -w ${w} -ax sr \
     ${reference} ${reads} > ${output}    
-    """
+    """.stripIndent().trim()
 }
