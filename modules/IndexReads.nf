@@ -1,4 +1,7 @@
-include { RunIndexing } from "./ShellCommands.nf"
+include { 
+    SortBam;
+    RunIndexing 
+    } from "./ShellCommands.nf"
 
 process IndexReads {
 
