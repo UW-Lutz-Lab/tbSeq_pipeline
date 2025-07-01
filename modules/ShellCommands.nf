@@ -14,6 +14,35 @@
 //     """
 // }
 
+def VarscanMpileup2Indel(
+    mpileup,
+    read_alias
+) {
+    return """
+    varscan mpileup2indel "${mpileup}" \
+        --min-var-freq 0.001 \
+        --min-reads2 2 \
+        --min-coverage 10 \
+        --p-value 0.01 \
+        --output-vcf 1 > "${read_alias}_varscan_indels.vcf"
+    """.stripIndent().trim()
+}
+
+def VarscanMpileup2Snp(
+    mpileup,
+    read_alias
+) {
+    return """
+    varscan mpileup2snp "${mpileup}" \\
+        --min-var-freq 0.001 \\
+        --min-reads2 2 \\
+        --min-coverage 10 \\
+        --p-value 0.01 \\
+        --output-vcf 1 > "${read_alias}_varscan_snps.vcf"
+    """.stripIndent().trim()
+}
+
+
 def SamtoolsMpileup(
     reference,
     reads,
