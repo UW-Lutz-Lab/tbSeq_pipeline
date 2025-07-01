@@ -6,12 +6,14 @@ process CoverageDepth {
     tag "Getting Read Depth ${reads}"
 
     input:
-    path reads
-    val read_alias
-    val reference
+        tuple(
+            path(reads), 
+            val(input_type), 
+            val(read_alias)
+        )
 
     output:
-    path "${read_alias}_coverage_report.csv"
+        path "${read_alias}_coverage_report.csv"
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
