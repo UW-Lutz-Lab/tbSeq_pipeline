@@ -101,7 +101,7 @@ def AlignWithBowtie2(reads, output, reference, ref_index="ref_index") {
     bowtie2-build "${reference}" "${ref_index}"
 
     # Align reads
-    bowtie2 -x "$index_base" -U "${reads}" -S "${output}" --very-sensitive-local
+    bowtie2 -x "${ref_index}" -U "${reads}" -S "${output}" --very-sensitive-local
     """.stripIndent().trim()
 }
 
