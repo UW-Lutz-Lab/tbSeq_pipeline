@@ -25,14 +25,26 @@ process BamConvertQualFilter {
     
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
+    // script:
+    //     SortBam(reads, "${reads.baseName}_sorted")
+    //     Bam2FqQualLenFilter(
+    //         "${reads.baseName}_sorted",
+    //         "${read_alias}_f${min_quality_filter}.fastq",
+    //         min_quality_filter,
+    //         max_quality_filter,
+    //         minlength,
+    //         maxlength
+    //     )
     script:
-        SortBam(reads, "${reads.baseName}_sorted")
-        Bam2FqQualLenFilter(
+        """
+        ${SortBam(reads, "${reads.baseName}_sorted")}
+        ${Bam2FqQualLenFilter(
             "${reads.baseName}_sorted",
             "${read_alias}_f${min_quality_filter}.fastq",
             min_quality_filter,
             max_quality_filter,
             minlength,
             maxlength
-        )
+        )}
+        """
 }
