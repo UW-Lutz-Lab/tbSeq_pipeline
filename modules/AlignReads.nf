@@ -48,14 +48,14 @@ process Bowtie2Alignment {
         tuple(
             path(reads),
             val(read_alias),
-            val(reference)
+            path(reference)
         )
 
     output:
         tuple(
             path("${read_alias}_bt2_aligned.sam"),
             val(read_alias),
-            val(reference)
+            path(reference)
         )
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
