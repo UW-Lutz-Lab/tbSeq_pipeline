@@ -20,6 +20,7 @@ process IndexReads {
 
     script:
     """
-        ${RunIndexing(reads)}    
+        ${SortBam("${reads}", "${read_alias}_aligned_sorted.bam")}
+        ${RunIndexing("${read_alias}_aligned_sorted.bam")}    
     """
 }

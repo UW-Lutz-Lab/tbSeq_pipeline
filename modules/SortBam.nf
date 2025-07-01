@@ -49,5 +49,8 @@ process SortBamAligned {
     // publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        SortBam("${reads}", "${read_alias}_sorted.bam")
+    """
+        ${SortBam("${reads}", "${read_alias}_sorted.bam")}
+    
+    """
 }
