@@ -32,7 +32,7 @@ process CallVarscan {
     ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")}
     ${VarscanMpileup2Indel(mpileup, read_alias)}
     ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")}
-    ${BcftoolsConcat(["${read_alias}_varscan_snps.vcf.gz", "${read_alias}_varscan_indels.vcf.gz"], "${read_alias}_varscan_concat")}
+    ${ConcatVCFs("${read_alias}_varscan_indels.vcf.gz", "${read_alias}_varscan_snps.vcf.gz", "${read_alias}_varscan_concat")}
     """
 }
 
