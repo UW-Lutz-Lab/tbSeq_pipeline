@@ -32,9 +32,15 @@ process NanoPlotQC_Unaligned {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        MakeDirectory("${read_alias}_unaligned_qc")
-        sorted_bam = SortBam("${reads}", "${read_alias}_unaligned_sorted.bam")
-        QCReads("${read_alias}_unaligned_qc", "ubam", sorted_bam)
+        """
+        set -x
+        ${MakeDirectory("${read_alias}_unaligned_qc")}
+        ${SortBam(reads, "${read_alias}_unaligned_sorted.bam")}
+        ${QCReads("${read_alias}_unaligned_qc", "ubam", "${read_alias}_unaligned_sorted.bam")}
+        """
+        // MakeDirectory("${read_alias}_unaligned_qc")
+        // SortBam("${reads}", "${read_alias}_unaligned_sorted.bam")
+        // QCReads("${read_alias}_unaligned_qc", "ubam", sorted_bam)
         // runNanoPlotQC(reads, "${reads.baseName}", input_type)
 }
 

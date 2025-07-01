@@ -16,24 +16,30 @@ def Bam2FqQualLenFilter(
 
 
 def MakeDirectory(outdir){
-    """
-    mkdir -p ${outdir}
-    """
+    return "mkdir -p ${outdir}"
 }
+
+// def QCReads(outdir, input_type, reads){
+//     """
+//     NanoPlot --only-report \
+//     -o ${outdir} \
+//     --${input_type} \
+//     ${reads} 
+//     """
+// }
 
 def QCReads(outdir, input_type, reads){
-    """
+    return """
     NanoPlot --only-report \
-    -o ${outdir} \
-    --${input_type} \
-    ${reads} 
-    """
+        -o ${outdir} \
+        --${input_type} \
+        ${reads}
+    """.stripIndent().trim()
 }
 
+
 def SortBam(reads, output) {
-    """
-    samtools sort -o ${output} ${reads}
-    """
+    return "samtools sort -o ${output} ${reads}"
 }
 
 // bowtie 2
