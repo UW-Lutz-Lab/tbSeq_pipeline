@@ -1,10 +1,3 @@
-// def RunIndexing(reads) {
-//     """
-//     $workflow.projectDir/pipeline_scripts/IndexReads.sh \
-//     --reads ${reads}
-//     """
-// }
-
 include { RunIndexing } from "./ShellCommands.nf"
 
 process IndexReads {
@@ -29,9 +22,4 @@ process IndexReads {
     """
         ${RunIndexing(reads)}    
     """
-    // """
-    // $workflow.projectDir/pipeline_scripts/IndexReads.sh \
-    // --reads ${reads}
-    // """
-
 }
