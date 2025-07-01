@@ -34,6 +34,6 @@ process CallVariants {
         ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")}
         ${VarscanMpileup2Indel("${mpileup}", "${read_alias}")}
         ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")} 
-        ${ConcatVCFs(""${read_alias}_varscan_indels.vcf.gz", "${read_alias}_varscan_indels.vcf.gz", "${read_alias}")}    
+        ${ConcatVCFs("${read_alias}_varscan_indels.vcf.gz", "${read_alias}_varscan_indels.vcf.gz", "${read_alias}")}    
     """
 }
