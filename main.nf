@@ -11,7 +11,7 @@ include { CoverageDepth } from "./modules/CoverageDepth.nf"
 // include { PlotCoverage } from "./modules/PlotCoverage.nf" 
 include { IndexReads } from "./modules/IndexReads.nf"
 include { GeneratePileup } from "./modules/GeneratePileup.nf"
-// include { CallVariants } from "./modules/CallVariants.nf"
+include { CallVariants } from "./modules/CallVariants.nf"
 
 
 // Read and parse the CSV file
