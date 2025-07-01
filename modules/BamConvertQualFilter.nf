@@ -9,7 +9,7 @@ process BamConvertQualFilter {
         tuple(
             path(reads),
             val(read_alias),
-            val(reference),
+            path(reference),
             val(min_quality_filter),
             val(max_quality_filter),
             val(minlength),
@@ -20,7 +20,7 @@ process BamConvertQualFilter {
         tuple(
             path("${read_alias}_f${min_quality_filter}.fastq"),
             val(read_alias),
-            val(reference)
+            path(reference)
         )
 
     script:
