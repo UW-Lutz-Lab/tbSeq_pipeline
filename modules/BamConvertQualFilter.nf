@@ -22,6 +22,8 @@ process BamConvertQualFilter {
             val(read_alias),
             path(reference)
         )
+    
+    publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
         SortBam(reads, "${reads.baseName}_sorted")
