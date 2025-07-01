@@ -15,8 +15,10 @@ def VarScan2(
 
 process CallVarscan {
     input:
-        path mpileup
-        val read_alias
+        tuple(
+            path(mpileup),
+        val(read_alias)
+        )
 
     output:
         path "${read_alias}_varscan_concat.vcf.gz"
