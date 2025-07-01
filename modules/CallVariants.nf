@@ -22,8 +22,9 @@ process CallVariants {
         )
 
     output:
-        path("*_snps.vcf")
-        path("*_indels.vcf")
+        // path("*_snps.vcf")
+        // path("*_indels.vcf")
+        path("*.vcf")
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
