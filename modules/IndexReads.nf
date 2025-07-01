@@ -6,16 +6,16 @@ process IndexReads {
         // val(reads)
         tuple(
             path(reads), 
-            val(input_type), 
-            val(read_alias)
+            val(read_alias),
+            val(reference)
         )
 
     output:
         tuple(
-            path reads,
-            path "*.bai",
-            val read_alias,
-            val reference
+            path(reads),
+            path("*.bai"),
+            val(read_alias),
+            val(reference)
         )
 
     script:
