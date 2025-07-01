@@ -14,6 +14,23 @@
 //     """
 // }
 
+def SamtoolsMpileup(
+    reads,
+    reference,
+    min_quality,
+    max_depth,
+    output
+) {
+    return """
+    samtools mpileup -f "${reference}" \\
+        -B \\
+        -Q "${min_quality}" \\
+        -d "${max_depth}" \\
+        "${reads}" > "${output}_samtools.pileup"
+    """.stripIndent().trim()
+}
+
+
 def RunIndexing(reads){
     return "samtools index ${reads}"
 }

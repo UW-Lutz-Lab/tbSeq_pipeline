@@ -1,14 +1,19 @@
-def SamtoolsMpileup(
-    reference, reads, min_quality, output) {
-    """
-    $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
-    --reference ${reference} \
-    --reads ${reads} \
-    --min_quality ${min_quality} \
-    --max_depth 30000 \
-    --output ${output}
-    """
-}
+include { 
+    SortBam;
+    SamtoolsMpileup
+    } from "./ShellCommands.nf"
+
+// def SamtoolsMpileup(
+//     reference, reads, min_quality, output) {
+//     """
+//     $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
+//     --reference ${reference} \
+//     --reads ${reads} \
+//     --min_quality ${min_quality} \
+//     --max_depth 30000 \
+//     --output ${output}
+//     """
+// }
 
 process GeneratePileup {
 
@@ -30,6 +35,6 @@ process GeneratePileup {
 
     script:
         """
-        ${SamtoolsMpileup(reference, reads, min_quality, read_alias)}    
+        ${SamtoolsMpileup("${reference}", "${reads}", "${min_quality}", "${read_alias}")}    
         """
 }
