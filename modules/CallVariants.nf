@@ -10,17 +10,21 @@ def VarScan2(
 process CallVariants {
 
     input:
-    path mpileup
-    val read_alias
+        tuple(
+            path(mpileup),
+            val(read_alias)
+        )
 
     output:
-    path "*_snps.vcf"
-    path "*_indels.vcf"
+        path("*_snps.vcf")
+        path("*_indels.vcf")
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-    VarScan2(mpileup, read_alias)
+    """
+        ${VarScan2("${mpileup}", "${read_alias}")}    
+    """
     // """
     // $workflow.projectDir/pipeline_scripts/CallVariants.sh \
     // --mpileup ${mpileup}

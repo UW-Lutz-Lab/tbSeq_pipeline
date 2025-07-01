@@ -175,10 +175,10 @@ workflow {
             reads, reads_index, read_alias, reference, params.min_quality_filter) 
         }
 
-    pileup = GeneratePileup(pileup_input_channel)
-    // CallVariants(pileup[0], pileup[1])
+    pileups = GeneratePileup(pileup_input_channel)
+    CallVariants(pileups)
     // // PlotCoverage(read_depth, aligned_sorted_reads[1])
-    // saveConfig()
+    saveConfig()
 }
 
 // workflow.onComplete {

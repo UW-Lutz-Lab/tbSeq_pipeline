@@ -29,9 +29,10 @@ process GeneratePileup {
     output:
         tuple(
             path("*.pileup"),
-            val(read_alias),
-            val(reference),
+            val(read_alias)
         )
+
+    publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
     """
