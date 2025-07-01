@@ -15,18 +15,18 @@
 // }
 
 def SamtoolsMpileup(
-    reads,
     reference,
+    reads,
     min_quality,
-    max_depth,
-    output
+    max_depth=30000,
+    read_alias
 ) {
     return """
-    samtools mpileup -f "${reference}" \\
-        -B \\
-        -Q "${min_quality}" \\
-        -d "${max_depth}" \\
-        "${reads}" > "${output}_samtools.pileup"
+    samtools mpileup -f "${reference}" \
+        -B \
+        -Q "${min_quality}" \
+        -d "${max_depth}" \
+        "${reads}" > "${read_alias}_samtools.pileup"
     """.stripIndent().trim()
 }
 

@@ -34,7 +34,7 @@ process GeneratePileup {
         )
 
     script:
-        """
-        ${SamtoolsMpileup("${reference}", "${reads}", "${min_quality}", "${read_alias}")}    
-        """
+    """
+        ${SamtoolsMpileup("${reference}", "${reads}", "${min_quality}", 30000, "${read_alias}")}    
+    """
 }
