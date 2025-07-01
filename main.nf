@@ -106,18 +106,27 @@ workflow {
     //     unaligned_sorted_reads[0], 
     //     "ubam", 
     //     unaligned_sorted_reads[1])
+    bam_channel.map { sample -> tuple(
+        file(sample.read_filepath), 
+        sample.alias, 
+        file(sample.ref_filepath), 
+        params.min_quality_filter,
+        params.max_quality_filter,
+        params.minlength,
+        params.maxlength) 
+        } .set { bam_filter_input_channel }
 
-    bam_filter_input_channel = bam_channel.map { 
-        reads, alias, ref -> tuple(
-            reads, 
-            alias,
-            ref,
-            params.min_quality_filter,
-            params.max_quality_filter,
-            params.minlength,
-            params.maxlength
-        ) 
-    }
+    // bam_filter_input_channel = bam_channel.map { 
+    //     reads, alias, ref -> tuple(
+    //         reads, 
+    //         alias,
+    //         ref,
+    //         params.min_quality_filter,
+    //         params.max_quality_filter,
+    //         params.minlength,
+    //         params.maxlength
+    //     ) 
+    // }
     
     filtered_fastq_channel = BamConvertQualFilter(bam_filter_input_channel)
 
