@@ -13,6 +13,25 @@ def VarScan2(
     """
 }
 
+process CallVarscan {
+    input:
+        path mpileup
+        val read_alias
+
+    output:
+        path "${read_alias}_varscan_concat.vcf.gz"
+
+    script:
+    """
+    ${VarscanMpileup2Snp(mpileup, read_alias)}
+    ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")}
+    ${VarscanMpileup2Indel(mpileup, read_alias)}
+    ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")}
+    ${BcftoolsConcat(["${read_alias}_varscan_snps.vcf.gz", "${read_alias}_varscan_indels.vcf.gz"], "${read_alias}_varscan_concat")}
+    """
+}
+
+
 process CallVariants {
 
     input:
