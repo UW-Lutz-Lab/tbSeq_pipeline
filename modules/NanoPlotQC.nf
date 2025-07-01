@@ -64,7 +64,7 @@ process NanoPlotQC_Aligned {
     """
         set -x
         ${SortBam(reads, "${read_alias}_aligned_sorted.bam")}
-        ${QCReads("${read_alias}_unaligned_qc", "${input_type}"", "${read_alias}_aligned_sorted.bam")}
+        ${QCReads("${read_alias}_unaligned_qc", "${input_type}", "${read_alias}_aligned_sorted.bam")}
     """
 
     // script:
