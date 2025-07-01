@@ -55,7 +55,7 @@ process NanoPlotQC_Unaligned {
         )
 
     output:
-        path "${read_alias}_unaligned_qc"
+        path("${read_alias}_unaligned_qc")
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
@@ -88,11 +88,11 @@ process NanoPlotQC_Aligned {
         """
         set -x
         ${SortBam(reads, "${read_alias}_aligned_sorted.bam")}
-        ${QCReads("${read_alias}_unaligned_qc", ${input_type}, "${read_alias}_aligned_sorted.bam")}
+        ${QCReads("${read_alias}_unaligned_qc", "${input_type}"", "${read_alias}_aligned_sorted.bam")}
         """
 
-    script:
-        QCReads("${read_alias}_aligned_qc", input_type, reads)
+    // script:
+    //     QCReads("${read_alias}_aligned_qc", input_type, reads)
         // runNanoPlotQC(reads, "${reads.baseName}", input_type)
     // """
     // $workflow.projectDir/pipeline_scripts/NanoPlotQC.sh \
