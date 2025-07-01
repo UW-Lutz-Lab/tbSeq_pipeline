@@ -1,6 +1,5 @@
 
 include { 
-    BuildBowtieRefIndex;
     AlignWithBowtie2;
     AlignWithMinimap2 
     } from "./ShellCommands.nf"
