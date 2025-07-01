@@ -77,17 +77,37 @@ def SortBam(reads, output) {
 //     """
 // }
 
+// def AlignWithBowtie2(reads, output, reference, ref_index="ref_index") {
+//     return """
+//     # Derive index base name
+//     index_base="ref_index"
+
+//     # Build bowtie2 index
+//     bowtie2-build "${reference}" "$index_base"
+
+//     # Align reads
+//     bowtie2 -x "$index_base" -U "${reads}" -S "${output}" --very-sensitive-local
+//     """.stripIndent().trim()
+// }
+
 def AlignWithBowtie2(reads, output, reference, ref_index="ref_index") {
     return """
+    set -e
+    echo "reads: ${reads}"
+    echo "reference: ${reference}"
+    ls -lh "${reads}" "${reference}"
+
+    # Derive index base name
+    index_base="${ref_index}"
+
     # Build bowtie2 index
-    bowtie2-build ${reference} ${ref_index}
+    bowtie2-build "${reference}" "$index_base"
+
     # Align reads
-    bowtie2 -x ${ref_index} \
-        -U ${reads} \
-        -S ${output} \
-        --very-sensitive-local
+    bowtie2 -x "$index_base" -U "${reads}" -S "${output}" --very-sensitive-local
     """.stripIndent().trim()
 }
+
 
 
 // minimap2
