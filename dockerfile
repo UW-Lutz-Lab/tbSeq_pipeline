@@ -100,4 +100,6 @@ RUN curl -L -o /usr/local/bin/VarScan.jar \
 RUN echo '#!/bin/bash\njava -jar /usr/local/bin/VarScan.jar "$@"' > /usr/local/bin/varscan \
     && chmod +x /usr/local/bin/varscan
 
+RUN apt-get update && apt-get install -y tabix
+
 WORKDIR "/mnt"

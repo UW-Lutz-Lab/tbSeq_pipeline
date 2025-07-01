@@ -1,3 +1,9 @@
+include { 
+    VarscanMpileup2Indel;
+    VarscanMpileup2Snp;
+    TabixVCF;
+    ConcatVCFs } from "./ShellCommands.nf"
+
 def VarScan2(
     mpileup, output) {
     """
@@ -23,11 +29,10 @@ process CallVariants {
 
     script:
     """
-        ${VarScan2("${mpileup}", "${read_alias}")}    
+        ${VarscanMpileup2Snp("${mpileup}", "${read_alias}")}
+        ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")}
+        ${VarscanMpileup2Indel("${mpileup}", "${read_alias}")}
+        ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")} 
+        ${ConcatVCFs(""${read_alias}_varscan_indels.vcf.gz", ${read_alias}_varscan_indels.vcf.gz", "${read_alias}")}    
     """
-    // """
-    // $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-    // --mpileup ${mpileup}
-    // --output ${read_alias}
-    // """
 }

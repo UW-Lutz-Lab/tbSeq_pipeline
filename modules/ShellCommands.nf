@@ -14,6 +14,23 @@
 //     """
 // }
 
+def ConcatVCFs(
+    vcf1,
+    vcf2,
+    read_alias
+) {
+    return """
+    bcftools concat -a ${vcf1} ${vcf2} -Oz -o ${read_alias}.vcf.gz
+    gunzip -c ${read_alias}.vcf.gz > ${read_alias}.vcf
+    """.stripIndent().trim()
+}
+
+def TabixVCF(
+    vcf
+) {
+    return "tabix -p vcf ${vcf}"
+}
+
 def VarscanMpileup2Indel(
     mpileup,
     read_alias
@@ -24,7 +41,7 @@ def VarscanMpileup2Indel(
         --min-reads2 2 \
         --min-coverage 10 \
         --p-value 0.01 \
-        --output-vcf 1 > "${read_alias}_varscan_indels.vcf"
+        --output-vcf 1 | bgzip -c > "${read_alias}_varscan_indels.vcf.gz"
     """.stripIndent().trim()
 }
 
@@ -33,12 +50,12 @@ def VarscanMpileup2Snp(
     read_alias
 ) {
     return """
-    varscan mpileup2snp "${mpileup}" \\
-        --min-var-freq 0.001 \\
-        --min-reads2 2 \\
-        --min-coverage 10 \\
-        --p-value 0.01 \\
-        --output-vcf 1 > "${read_alias}_varscan_snps.vcf"
+    varscan mpileup2snp "${mpileup}" \
+        --min-var-freq 0.001 \
+        --min-reads2 2 \
+        --min-coverage 10 \
+        --p-value 0.01 \
+        --output-vcf 1 | bgzip -c > "${read_alias}_varscan_snps.vcf.gz"
     """.stripIndent().trim()
 }
 
