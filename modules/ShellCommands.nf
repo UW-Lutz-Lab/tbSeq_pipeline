@@ -14,23 +14,23 @@
 //     """
 // }
 
-// def ConcatVCFs(
-//     vcf1,
-//     vcf2,
-//     read_alias
-// ) {
-//     return """
-//     bcftools concat -a ${vcf1} ${vcf2} -Oz -o ${read_alias}.vcf.gz
-//     gunzip -c ${read_alias}.vcf.gz > ${read_alias}.vcf
-//     """.stripIndent().trim()
-// }
-
-def BcftoolsConcat(vcfs, read_alias) {
-    """
-    bcftools concat -a ${vcfs.join(' ')} -Oz -o ${read_alias}.vcf.gz
+def ConcatVCFs(
+    vcf1,
+    vcf2,
+    read_alias
+) {
+    return """
+    bcftools concat -a ${vcf1} ${vcf2} -Oz -o ${read_alias}.vcf.gz
     gunzip -c ${read_alias}.vcf.gz > ${read_alias}.vcf
     """.stripIndent().trim()
 }
+
+// def BcftoolsConcat(vcfs, read_alias) {
+//     """
+//     bcftools concat -a ${vcfs.join(' ')} -Oz -o ${read_alias}.vcf.gz
+//     gunzip -c ${read_alias}.vcf.gz > ${read_alias}.vcf
+//     """.stripIndent().trim()
+// }
 
 def TabixVCF(
     vcf
