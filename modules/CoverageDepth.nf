@@ -1,9 +1,14 @@
+include { 
+    DetermineCoverage;
+    } from "./ShellCommands.nf"
+
 process CoverageDepth {
     tag "Getting Read Depth ${reads}"
 
     input:
     path reads
     val read_alias
+    val reference
 
     output:
     path "${read_alias}_coverage_report.csv"
@@ -12,6 +17,6 @@ process CoverageDepth {
 
     script:
         """
-        samtools depth -a ${reads} | awk '{OFS=","; print \$1, \$2, \$3}' > ${read_alias}_coverage_report.csv
+        ${DetermineCoverage("${reads}", ${read_alias})}
         """
 }

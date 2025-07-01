@@ -163,14 +163,19 @@ workflow {
 
     // // // aligned_sorted_reads = SortBamAligned(aligned_reads)
     // aligned_sorted_reads_channel = SortBamAligned(aligned_reads_channel)
-    // aligned_qc_input_channel = aligned_sorted_reads_channel.map { 
-    //     reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
-    //     }
+    aligned_qc_input_channel = aligned_sorted_reads_channel.map { 
+        reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
+        }
     
-    // NanoPlotQC_Aligned(aligned_qc_input_channel)
-    // read_depth = CoverageDepth(aligned_sorted_reads[0], aligned_sorted_reads[1])
-    // index_reads = IndexReads(aligned_sorted_reads[0], aligned_sorted_reads[1])
-    // pileup = GeneratePileup(aligned_sorted_reads[0], index_reads[0], aligned_reads[1], aligned_reads[2], params.quality_filter)
+    NanoPlotQC_Aligned(aligned_qc_input_channel)
+    read_depth = CoverageDepth(aligned_reads_channel)
+    index_reads_channel = IndexReads(aligned_reads_channel)
+    pileup_input_channel = index_reads_channel.map { 
+        reads, reads_index, read_alias, reference -> tuple(
+            reads, reads_index, read_alias, reference, params.min_quality_filter) 
+        }
+
+    pileup = GeneratePileup(pileup_input_channel)
     // CallVariants(pileup[0], pileup[1])
     // // PlotCoverage(read_depth, aligned_sorted_reads[1])
     // saveConfig()

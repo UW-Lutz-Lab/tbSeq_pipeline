@@ -14,6 +14,14 @@
 //     """
 // }
 
+def RunIndexing(reads){
+    return "samtools index ${reads}"
+}
+
+def DetermineCoverage(reads, read_alias){
+    return "samtools depth -a ${reads} | awk '{OFS=","; print \$1, \$2, \$3}' > ${read_alias}_coverage_report.csv"
+}
+
 def Bam2FqQualLenFilter(
     reads,
     output,

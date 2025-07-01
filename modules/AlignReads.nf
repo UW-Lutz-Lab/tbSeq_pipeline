@@ -48,21 +48,22 @@ process Bowtie2Alignment {
         tuple(
             path(reads),
             val(read_alias),
-            path(reference)
+            val(reference)
         )
 
     output:
         tuple(
             path("${read_alias}_bt2_aligned.sam"),
             val(read_alias),
-            path(reference)
+            val(reference)
         )
 
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        // BuildBowtieRefIndex(reference)
-        AlignWithBowtie2(reads, "${read_alias}_bt2_aligned.sam", reference)
+        """
+        ${AlignWithBowtie2(reads, "${read_alias}_bt2_aligned.sam", reference)}
+        """
 }
 
 process Minimap2Alignment {
@@ -81,9 +82,11 @@ process Minimap2Alignment {
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
     script:
-        AlignWithMinimap2(params.alignment_settings[params.alignment_type].k
+        """
+        ${AlignWithMinimap2(params.alignment_settings[params.alignment_type].k
         params.alignment_settings[params.alignment_type].w, 
         reads, 
-        "${read_alias}_mm2_aligned.sam")
+        "${read_alias}_mm2_aligned.sam")}
+        """
 
 }
