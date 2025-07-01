@@ -2,7 +2,8 @@ include {
     VarscanMpileup2Indel;
     VarscanMpileup2Snp;
     TabixVCF;
-    BcftoolsConcat } from "./ShellCommands.nf"
+    BcftoolsConcat;
+    ConcatVCFs } from "./ShellCommands.nf"
 
 def VarScan2(
     mpileup, output) {
