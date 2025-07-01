@@ -97,11 +97,8 @@ def AlignWithBowtie2(reads, output, reference, ref_index="ref_index") {
     echo "reference: ${reference}"
     ls -lh "${reads}" "${reference}"
 
-    # Derive index base name
-    index_base="${ref_index}"
-
     # Build bowtie2 index
-    bowtie2-build "${reference}" "$index_base"
+    bowtie2-build "${reference}" "${ref_index}"
 
     # Align reads
     bowtie2 -x "$index_base" -U "${reads}" -S "${output}" --very-sensitive-local
