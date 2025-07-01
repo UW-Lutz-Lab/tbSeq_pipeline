@@ -163,7 +163,7 @@ workflow {
 
     // // // aligned_sorted_reads = SortBamAligned(aligned_reads)
     // aligned_sorted_reads_channel = SortBamAligned(aligned_reads_channel)
-    aligned_qc_input_channel = aligned_sorted_reads_channel.map { 
+    aligned_qc_input_channel = aligned_reads_channel.map { 
         reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
         }
     
