@@ -22,7 +22,7 @@ def ConcatVCFs(
 ) {
     return """
     bcftools concat -a ${vcf1} ${vcf2} -Oz -o ${read_alias}.vcf.gz && \
-    bcftools +fill-tags ${read_alias}.vcf.gz -- -t TYPE -o ${read_alias}_final.vcf.gz -Oz && \
+    bcftools +fill-tags ${read_alias}.vcf.gz -Oz -o ${read_alias}_final.vcf.gz -- -t TYPE && \
     gunzip -c ${read_alias}_final.vcf.gz > ${read_alias}_final.vcf
     """.stripIndent().trim()
 }
