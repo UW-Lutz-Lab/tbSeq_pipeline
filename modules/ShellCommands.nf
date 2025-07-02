@@ -55,6 +55,9 @@ def TabixVCF(
  *
  * Args:
  *   mpileup (String): Path to the input pileup file (SAMtools pileup format).
+ *   min_var_freq (Float): Minimum variant allele frequency required to call a variant.
+ *   min_coverage (Int): Minimum total read depth at a position to make a call.
+ *   p_val (Float): Maximum p-value for variant call significance (computed from user-supplied GQ).
  *   output_tag (String): Prefix or tag for the output file.
  *
  * Output:
@@ -63,17 +66,22 @@ def TabixVCF(
  * Assumptions:
  *   - VarScan2 and bgzip are available in the PATH.
  *   - Input pileup is correctly formatted and compatible with VarScan2.
+ *   - The p-value argument should be derived from a user-supplied genotype quality (GQ) threshold,
+ *     using the transformation: p_val = 10^(-GQ/10).
  */
 def VarscanMpileup2Indel(
     mpileup,
+    min_var_freq,
+    min_coverage,
+    p_val,
     output_tag
 ) {
     return """
     varscan mpileup2indel "${mpileup}" \
-        --min-var-freq 0.001 \
+        --min-var-freq ${min_var_freq} \
         --min-reads2 2 \
-        --min-coverage 10 \
-        --p-value 0.01 \
+        --min-coverage ${min_coverage} \
+        --p-value ${p_val} \
         --output-vcf 1 | bgzip -c > "${output_tag}.vcf.gz"
     """.stripIndent().trim()
 }
@@ -87,6 +95,9 @@ def VarscanMpileup2Indel(
  *
  * Args:
  *   mpileup (String): Path to the input pileup file (SAMtools pileup format).
+ *   min_var_freq (Float): Minimum variant allele frequency required to call a variant.
+ *   min_coverage (Int): Minimum total read depth at a position to make a call.
+ *   p_val (Float): Maximum p-value for variant call significance (computed from user-supplied GQ).
  *   output_tag (String): Prefix or tag for the output file.
  *
  * Output:
@@ -95,17 +106,22 @@ def VarscanMpileup2Indel(
  * Assumptions:
  *   - VarScan2 and bgzip are available in the PATH.
  *   - Input pileup is correctly formatted and compatible with VarScan2.
+ *   - The p-value argument should be derived from a user-supplied genotype quality (GQ) threshold,
+ *     using the transformation: p_val = 10^(-GQ/10).
  */
 def VarscanMpileup2Snp(
     mpileup,
+    min_var_freq,
+    min_coverage,
+    p_val,
     output_tag
 ) {
     return """
     varscan mpileup2snp "${mpileup}" \
-        --min-var-freq 0.001 \
+        --min-var-freq ${min_var_freq} \
         --min-reads2 2 \
-        --min-coverage 10 \
-        --p-value 0.01 \
+        --min-coverage ${min_coverage} \
+        --p-value ${p_val} \
         --output-vcf 1 | bgzip -c > "${output_tag}.vcf.gz"
     """.stripIndent().trim()
 }
