@@ -29,7 +29,7 @@ include {
  *   - Output directory is writeable.
  */
 process GeneratePileup {
-
+    tag "Creating Mpileup: ${read_alias}"
     input:
         tuple(
             path(reads),

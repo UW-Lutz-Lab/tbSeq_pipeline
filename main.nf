@@ -67,6 +67,7 @@ if (!align_settings) {
 // ----
 // Each sample's output goes into its own directory for organization
 process CreateOutdir {
+    tag "Creating Outdir for ${read_alias}"
     input:
     val read_alias
 

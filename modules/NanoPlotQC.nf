@@ -26,7 +26,7 @@ include {
  *   - Output directory is writeable.
  */
 process NanoPlotQC_Unaligned {
-    tag "NanoStats QC ${reads}"
+    tag "QCing Unfiltered Reads: ${read_alias}"
 
     input:
         tuple(
@@ -73,7 +73,7 @@ process NanoPlotQC_Unaligned {
  */
 process NanoPlotQC_Aligned {
     errorStrategy 'ignore'
-    tag "NanoStats QC ${reads.baseName}"
+    tag "QCing Aligned Reads: ${read_alias}"
 
     input:
         tuple(

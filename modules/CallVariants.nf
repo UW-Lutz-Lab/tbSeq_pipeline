@@ -18,7 +18,7 @@ def min_var_freq = params.min_var_freq
 def min_coverage = params.min_coverage
 
 process CallVariants {
-
+    tag "Calling Variants: ${read_alias}"
     input:
         tuple(
             path(mpileup),

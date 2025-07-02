@@ -29,7 +29,7 @@ include {
  *   - Sorting step produces "${read_alias}_aligned_sorted.bam", and indexing is performed on this file.
  */
 process IndexReads {
-
+    tag "Indexing: ${read_alias}"
     input:
         // val(reads)
         tuple(
