@@ -2,44 +2,7 @@ include {
     VarscanMpileup2Indel;
     VarscanMpileup2Snp;
     TabixVCF;
-    BcftoolsConcat;
     ConcatVCFs } from "./ShellCommands.nf"
-
-def VarScan2(
-    mpileup, output) {
-    """
-    $workflow.projectDir/pipeline_scripts/CallVariants.sh \
-    --mpileup ${mpileup} \
-    --output ${output}
-    """
-}
-
-process CallVarscan {
-    input:
-        tuple(
-            path(mpileup),
-        val(read_alias)
-        )
-
-    output:
-        tuple(
-            path("*.vcf"),
-            path("*.vcf.gz"),
-            path("*.vcf.gz"),
-        )
-    
-    publishDir "${params.outdir}/${read_alias}", mode: 'copy'
-
-    script:
-    """
-    ${VarscanMpileup2Snp(mpileup, read_alias)}
-    ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")}
-    ${VarscanMpileup2Indel(mpileup, read_alias)}
-    ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")}
-    ${BcftoolsConcat(["${read_alias}_varscan_indels.vcf.gz", "${read_alias}_varscan_snps.vcf.gz"], "${read_alias}_varscan_concat")}
-    """
-}
-
 
 process CallVariants {
 

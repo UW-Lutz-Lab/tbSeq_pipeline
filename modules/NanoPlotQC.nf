@@ -1,49 +1,30 @@
-// def runNanoPlotQC(reads, out_dir, input_type) {
-//     """
-//     $workflow.projectDir/pipeline_scripts/NanoPlotQC.sh \
-//     --reads ${reads} \
-//     --input_type ${input_type} \
-//     --out_dir ${out_dir}_qc
-//     """
-// }
-
 include { 
     MakeDirectory;
     SortBam;
     QCReads } from "./ShellCommands.nf"
 
-// process NanoPlotQC_Unaligned {
-//     tag "NanoStats QC ${reads}"
-
-//     input:
-//         // val(reads)
-//         tuple(
-//             path(reads), 
-//             val(input_type), 
-//             val(read_alias)
-//         )
-//     // path reads
-//     // val input_type // --ubam
-//     // val read_alias
-
-//     output:
-//         path "${read_alias}_unaligned_qc"
-
-//     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
-
-//     script:
-//     """
-//         set -x
-//         ${MakeDirectory("${read_alias}_unaligned_qc")}
-//         ${SortBam(reads, "${read_alias}_unaligned_sorted.bam")}
-//         ${QCReads("${read_alias}_unaligned_qc", ${input_type}, "${read_alias}_unaligned_sorted.bam")}
-//     """
-//         // MakeDirectory("${read_alias}_unaligned_qc")
-//         // SortBam("${reads}", "${read_alias}_unaligned_sorted.bam")
-//         // QCReads("${read_alias}_unaligned_qc", "ubam", sorted_bam)
-//         // runNanoPlotQC(reads, "${reads.baseName}", input_type)
-// }
-
+// ======================
+// NanoPlotQC_Unaligned
+// ======================
+/*
+ * Runs QC analysis on unaligned sequencing reads:
+ *   1. Creates a results directory for QC output.
+ *   2. Sorts the input BAM file (for consistent downstream QC).
+ *   3. Runs NanoPlot to generate summary QC metrics and visualizations.
+ *
+ * Inputs:
+ *   reads (path):         Input BAM file (unaligned or unsorted).
+ *   input_type (val):     NanoPlot input type (e.g., "bam").
+ *   read_alias (val):     Prefix or alias for output files/directories.
+ *
+ * Output:
+ *   ${read_alias}_unaligned_qc - Directory containing NanoPlot QC results.
+ *
+ * Assumptions:
+ *   - Input BAM is valid and compatible with samtools and NanoPlot.
+ *   - Required tools (samtools, NanoPlot) are available in the PATH.
+ *   - Output directory is writeable.
+ */
 process NanoPlotQC_Unaligned {
     tag "NanoStats QC ${reads}"
 
@@ -68,6 +49,28 @@ process NanoPlotQC_Unaligned {
     """
 }
 
+// ======================
+// NanoPlotQC_Aligned
+// ======================
+/*
+ * Runs QC analysis on aligned sequencing reads:
+ *   1. Sorts the input BAM file (to ensure compatibility with QC tools).
+ *   2. Runs NanoPlot to generate QC metrics and visualizations for the aligned reads.
+ *
+ * Inputs:
+ *   reads (path):         Input BAM file (aligned).
+ *   input_type (val):     NanoPlot input type (e.g., "bam").
+ *   read_alias (val):     Prefix or alias for output files/directories.
+ *
+ * Output:
+ *   ${read_alias}_aligned_qc - Directory containing NanoPlot QC results for aligned reads.
+ *
+ * Assumptions:
+ *   - Input BAM is valid and aligned, and compatible with samtools and NanoPlot.
+ *   - Required tools (samtools, NanoPlot) are available in the PATH.
+ *   - Output directory is writeable.
+ *   - Process uses 'errorStrategy ignore' to continue even if QC fails (optional).
+ */
 process NanoPlotQC_Aligned {
     errorStrategy 'ignore'
     tag "NanoStats QC ${reads.baseName}"
@@ -90,14 +93,4 @@ process NanoPlotQC_Aligned {
         ${SortBam("${reads}", "${read_alias}_aligned_sorted.bam")}
         ${QCReads("${read_alias}_aligned_qc", "${input_type}", "${read_alias}_aligned_sorted.bam")}
         """
-
-    // script:
-    //     QCReads("${read_alias}_aligned_qc", input_type, reads)
-        // runNanoPlotQC(reads, "${reads.baseName}", input_type)
-    // """
-    // $workflow.projectDir/pipeline_scripts/NanoPlotQC.sh \
-    // --reads ${reads} \
-    // --input_type ${input_type} \
-    // --out_dir ${reads.baseName}_qc
-    // """
 }

@@ -3,18 +3,31 @@ include {
     SamtoolsMpileup
     } from "./ShellCommands.nf"
 
-// def SamtoolsMpileup(
-//     reference, reads, min_quality, output) {
-//     """
-//     $workflow.projectDir/pipeline_scripts/GeneratePileup.sh \
-//     --reference ${reference} \
-//     --reads ${reads} \
-//     --min_quality ${min_quality} \
-//     --max_depth 30000 \
-//     --output ${output}
-//     """
-// }
-
+// ======================
+// GeneratePileup
+// ======================
+/*
+ * Generates a pileup file from aligned sequencing reads for downstream variant calling.
+ * First sorts the input BAM file, then runs samtools mpileup using the provided parameters.
+ *
+ * Inputs:
+ *   reads (path):         Input BAM file (aligned reads).
+ *   read_index (path):    BAM index file (not directly used here, but ensures BAM is indexed).
+ *   read_alias (val):     Prefix or alias for output file naming.
+ *   reference (val):      Reference FASTA file.
+ *   min_quality (val):    Minimum base quality threshold for inclusion in the pileup.
+ *
+ * Output:
+ *   tuple(
+ *     *.pileup,       // Generated pileup file (named with read_alias)
+ *     read_alias      // Alias for downstream tracking
+ *   )
+ *
+ * Assumptions:
+ *   - samtools is available in the PATH.
+ *   - Input BAM is valid and sorted/indexed.
+ *   - Output directory is writeable.
+ */
 process GeneratePileup {
 
     input:
