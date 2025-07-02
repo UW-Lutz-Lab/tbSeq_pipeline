@@ -1,3 +1,31 @@
+// ======================
+// ConcatVCFs
+// ======================
+/*
+ * Concatenates two VCF files, adds explicit INFO/TYPE tag, and outputs
+ * both compressed and uncompressed VCFs.
+ *
+ * Args:
+ *   vcf1 (String): Path to first compressed VCF file.
+ *   vcf2 (String): Path to second compressed VCF file.
+ *   read_alias (String): Prefix for output files.
+ *
+ * Output:
+ *   ${read_alias}.vcf.gz        - merged VCF, compressed
+ *   ${read_alias}_final.vcf.gz  - merged VCF with TYPE tag, compressed
+ *   ${read_alias}.vcf           - merged VCF, uncompressed
+ */
+def ConcatVCFs(
+    vcf1,
+    vcf2,
+    read_alias
+) {
+    return """
+    bcftools concat -a ${vcf1} ${vcf2} -Oz -o ${read_alias}.vcf.gz && \
+    bcftools +fill-tags ${read_alias}.vcf.gz -- -t TYPE -o ${read_alias}_final.vcf.gz -Oz && \
+    gunzip -c ${read_alias}_final.vcf.gz > ${read_alias}_final.vcf
+    """.stripIndent().trim()
+}
 
 // ======================
 // BcftoolsConcat

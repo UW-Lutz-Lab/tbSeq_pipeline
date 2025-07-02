@@ -2,7 +2,8 @@ include {
     VarscanMpileup2Indel;
     VarscanMpileup2Snp;
     TabixVCF;
-    BcftoolsConcat } from "./ShellCommands.nf"
+    BcftoolsConcat;
+    ConcatVCFs } from "./ShellCommands.nf"
 
 // ======================
 // gqToPval
@@ -103,10 +104,10 @@ process CallVariants {
             "${read_alias}_varscan_indels"
         )} && \
         ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")}  && \
-        ${BcftoolsConcat(
-            ["${read_alias}_varscan_indels.vcf.gz",
-            "${read_alias}_varscan_snps.vcf.gz"],
-            "${read_alias}_varscan_comb"
+        ${ConcatVCFs(
+            "${read_alias}_varscan_indels.vcf.gz",
+            "${read_alias}_varscan_snps.vcf.gz",
+            "${read_alias}_varscan_final"
         )}    
     """
 }
