@@ -56,7 +56,7 @@ process BamConvertQualFilter {
 
     script:
         """
-        ${SortBam(reads, "${reads.baseName}_sorted")}
+        ${SortBam(reads, "${reads.baseName}_sorted")} &&\
         ${Bam2FqQualLenFilter(
             "${reads.baseName}_sorted",
             "${read_alias}_f${min_quality_filter}-${max_quality_filter}.fastq",
