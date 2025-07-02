@@ -1,22 +1,31 @@
 #!/usr/bin/env nextflow
 
+// ===========================
+//       PIPELINE SETUP
+// ===========================
+
+// Use Nextflow DSL2 syntax (modern, modular, recommended)
 nextflow.enable.dsl=2
 
+// ----
+// Import processes from module scripts
+// ----
 include { SortBamUnaligned; SortBamAligned } from "./modules/SortBam.nf"
-// include { NanoPlotQC_Unaligned } from "./modules/NanoPlotQC.nf"
 include { NanoPlotQC_Unaligned; NanoPlotQC_Aligned } from "./modules/NanoPlotQC.nf"
 include { BamConvertQualFilter } from "./modules/BamConvertQualFilter.nf"
 include { Bowtie2Alignment; Minimap2Alignment } from "./modules/AlignReads.nf"
 include { CoverageDepth } from "./modules/CoverageDepth.nf"
-// include { PlotCoverage } from "./modules/PlotCoverage.nf" 
 include { IndexReads } from "./modules/IndexReads.nf"
 include { GeneratePileup } from "./modules/GeneratePileup.nf"
 include { CallVariants } from "./modules/CallVariants.nf"
 
-
 // Read and parse the CSV file
 samples = file(params.samplesheet)
 
+// ----
+// Parse samplesheet and build sample data list
+// 'sample_data' will store a list of maps, one for each sample
+// ----
 def sample_data = []
 samples.withReader { reader ->
     reader.readLine() // Skip the header
@@ -29,6 +38,10 @@ samples.withReader { reader ->
     }
 }
 
+// ----
+// Utility: Save used parameters to file for reproducibility
+// ----
+// This saves the parameters used in this pipeline run to a text file in the output directory.
 def saveConfig() {
     def configText = params.toString()   // Only user params, much safer!
     def configFile = file("${params.outdir}/pipeline_run_config.txt")
@@ -38,15 +51,21 @@ def saveConfig() {
     log.info "Saved used Nextflow params to ${configFile}"
 }
 
-// Fetch the settings for the selected alignment type
+// ----
+// Check and fetch alignment settings based on user input
+// ----
 def align_settings = params.alignment_type
 
 // Check if the alignment type exists
+// Ensure the user has selected a valid alignment type
 if (!align_settings) {
     error "Alignment type '${params.alignment_type}' is not defined in the configuration. Available types: ${params.alignment_settings.keySet().join(', ')}"
 }
 
-
+// ----
+// Utility process to create per-sample output directories
+// ----
+// Each sample's output goes into its own directory for organization
 process CreateOutdir {
     input:
     val read_alias
@@ -58,9 +77,11 @@ process CreateOutdir {
 }
 
 workflow {
+    // =========================================
+    //     SYSTEM CHECKS AND SAFETY GUARDS
+    // =========================================
 
     // NUMBER OF CORES CHECK
-
     // Get the number of available processors
     def availableCpus = Runtime.runtime.availableProcessors()
 
@@ -69,43 +90,36 @@ workflow {
         error "The pipeline requires at least 4 CPU cores to run. Available: ${availableCpus}."
     }
 
+    // =========================================
+    //     INPUT CHANNEL SETUP
+    // =========================================
+
+    // Create a channel from the sample_data 
+    // list, each element is a sample Map
+
     Channel
         .from( sample_data )
         .set { bam_channel }
 
+    // Create a channel of sample aliases (for directory creation)
     bam_channel.map { it.alias }
         .set { outdir_channel }
 
+    // Create output directories for each sample
     CreateOutdir(outdir_channel)
 
-    // unaligned_sorted_reads = SortBamUnaligned(bam_channel)
-
-    // unaligned_qc_input_channel = unaligned_sorted_reads.map { 
-    //     reads, alias, ref -> tuple(reads, "ubam", alias) 
-    //     }
-
-    // unaligned_sorted_reads = SortBamUnaligned(bam_channel)
-
+    // Prepare input for initial QC process: 
+    // (reads path, input type, alias)
     bam_channel.map { sample -> tuple(
         file(sample.read_filepath), 
         "ubam", 
         sample.alias ) 
         } .set { unaligned_qc_input_channel }
 
-    // unaligned_qc_input_channel = bam_channel.map { 
-    //     alias, read_filepath, ref_filepath -> tuple(alias, "ubam", read_filepath) 
-    //     }
-
+    // Run QC on raw/unfiltered reads
     NanoPlotQC_Unaligned(unaligned_qc_input_channel)
 
-    // NanoPlotQC_Unaligned(
-    //     unaligned_sorted_reads.map{ bam, alias, ref -> [bam, "ubam", alias] }
-    // )
-
-    // NanoPlotQC_Unaligned(
-    //     unaligned_sorted_reads[0], 
-    //     "ubam", 
-    //     unaligned_sorted_reads[1])
+    // Prepare input for BAM -> FASTQ filtering process
     bam_channel.map { sample -> tuple(
         file(sample.read_filepath), 
         sample.alias, 
@@ -116,76 +130,60 @@ workflow {
         params.maxlength) 
         } .set { bam_filter_input_channel }
 
-    // bam_filter_input_channel = bam_channel.map { 
-    //     reads, alias, ref -> tuple(
-    //         reads, 
-    //         alias,
-    //         ref,
-    //         params.min_quality_filter,
-    //         params.max_quality_filter,
-    //         params.minlength,
-    //         params.maxlength
-    //     ) 
-    // }
-    
+    // Run BAM-to-FASTQ conversion with quality and length filters applied    
     filtered_fastq_channel = BamConvertQualFilter(bam_filter_input_channel)
 
-    // // filtered_fastq = BamConvertQualFilter(
-    // //     unaligned_sorted_reads[0],
-    // //     params.quality_filter,
-    // //     params.minlength,
-    // //     params.maxlength,
-    // //     unaligned_sorted_reads[1],
-    // //     unaligned_sorted_reads[2])
+    // =========================================
+    //           SEQUENCE ALIGNMENT
+    // =========================================
 
-    // // if (params.alignment_type == 'minimap2') {
-    // //     // Run minimap2 with these specific params
-    // //     aligned_reads_channel = AlignReadsMinimap2(
-    // //         filtered_fastq[0], 
-    // //         filtered_fastq[1],
-    // //         filtered_fastq[2])
-    // // }
-    // // else if (params.alignment_type == 'bowtie2') {
-    // //     // Run alternative or with different params
-    // //     aligned_reads_channel = AlignReadsBowtie2(
-    // //         filtered_fastq[0], 
-    // //         filtered_fastq[1],
-    // //         filtered_fastq[2])
-    // // }
+    // Based on user parameter, select alignment tool
     if (params.alignment_type == 'minimap2') {
         // Run minimap2 with these specific params
         aligned_reads_channel = Minimap2Alignment(filtered_fastq_channel)
     }
     else if (params.alignment_type == 'bowtie2') {
-        // Run alternative or with different params
+        // Run bowtie2 with different params
         aligned_reads_channel = Bowtie2Alignment(filtered_fastq_channel)
     }
 
-    // // // aligned_sorted_reads = SortBamAligned(aligned_reads)
-    // aligned_sorted_reads_channel = SortBamAligned(aligned_reads_channel)
+    // =========================================
+    //     QC & COVERAGE OF ALIGNED READS
+    // =========================================
+
+    // Prepare input for QC on aligned reads
     aligned_qc_input_channel = aligned_reads_channel.map { 
         reads, read_alias, reference -> tuple(reads, "bam", read_alias) 
         }
     
+    // Run QC on aligned BAMs
     NanoPlotQC_Aligned(aligned_qc_input_channel)
+
+    // Compute coverage depth per sample
     read_depth = CoverageDepth(aligned_reads_channel)
+
+    // Index aligned BAMs for downstream processes
     index_reads_channel = IndexReads(aligned_reads_channel)
+
+    // =========================================
+    //     VARIANT CALLING
+    // =========================================
+
+    // Prepare input for pileup generation (includes index and QC params)
     pileup_input_channel = index_reads_channel.map { 
         reads, reads_index, read_alias, reference -> tuple(
             reads, reads_index, read_alias, reference, params.min_quality_filter) 
         }
 
+    // Generate pileup files for each sample
     pileups = GeneratePileup(pileup_input_channel)
+
+    // Call variants from pileups (VCF output)
     CallVariants(pileups)
-    // // PlotCoverage(read_depth, aligned_sorted_reads[1])
+
+    // plot coverage;
+    // PlotCoverage(read_depth, aligned_sorted_reads[1])
+
+    // Save the configuration parameters
     saveConfig()
 }
-
-// workflow.onComplete {
-//     try {
-//         def outDir = params.outdir ?: "./processed_results"
-//         saveConfig(outDir)
-//     } catch (Exception e) {
-//         log.warn "Failed to save config onComplete: ${e.message}"
-//     }
-// }
