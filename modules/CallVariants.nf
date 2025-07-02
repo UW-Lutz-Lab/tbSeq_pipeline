@@ -2,7 +2,7 @@ include {
     VarscanMpileup2Indel;
     VarscanMpileup2Snp;
     TabixVCF;
-    ConcatVCFs } from "./ShellCommands.nf"
+    BcftoolsConcat } from "./ShellCommands.nf"
 
 // ======================
 // gqToPval
