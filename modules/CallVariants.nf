@@ -60,10 +60,10 @@ process CallVariants {
 
     script:
     """
-        ${VarscanMpileup2Snp("${mpileup}", "${read_alias}_varscan_snps")}
-        ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")}
-        ${VarscanMpileup2Indel("${mpileup}", "${read_alias}_varscan_indels")}
-        ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")} 
+        ${VarscanMpileup2Snp("${mpileup}", "${read_alias}_varscan_snps")} && \
+        ${TabixVCF("${read_alias}_varscan_snps.vcf.gz")} && \
+        ${VarscanMpileup2Indel("${mpileup}", "${read_alias}_varscan_indels")} && \
+        ${TabixVCF("${read_alias}_varscan_indels.vcf.gz")}  && \
         ${ConcatVCFs("${read_alias}_varscan_indels.vcf.gz", "${read_alias}_varscan_snps.vcf.gz", "${read_alias}_varscan_comb")}    
     """
 }

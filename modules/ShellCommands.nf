@@ -40,7 +40,7 @@ def TabixVCF(
 
 def VarscanMpileup2Indel(
     mpileup,
-    read_alias
+    output_tag
 ) {
     return """
     varscan mpileup2indel "${mpileup}" \
@@ -48,13 +48,13 @@ def VarscanMpileup2Indel(
         --min-reads2 2 \
         --min-coverage 10 \
         --p-value 0.01 \
-        --output-vcf 1 | bgzip -c > "${read_alias}_varscan_indels.vcf.gz"
+        --output-vcf 1 | bgzip -c > "${output_tag}.vcf.gz"
     """.stripIndent().trim()
 }
 
 def VarscanMpileup2Snp(
     mpileup,
-    read_alias
+    output_tag
 ) {
     return """
     varscan mpileup2snp "${mpileup}" \
@@ -62,7 +62,7 @@ def VarscanMpileup2Snp(
         --min-reads2 2 \
         --min-coverage 10 \
         --p-value 0.01 \
-        --output-vcf 1 | bgzip -c > "${read_alias}_varscan_snps.vcf.gz"
+        --output-vcf 1 | bgzip -c > "${output_tag}.vcf.gz"
     """.stripIndent().trim()
 }
 
