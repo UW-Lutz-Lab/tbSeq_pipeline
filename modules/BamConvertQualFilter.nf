@@ -32,7 +32,7 @@ include {
  *   - Output directory is writeable.
  */
 process BamConvertQualFilter {
-    tag "Converting ${reads.baseName} to Fastq"
+    tag "Converting ${read_alias} to Fastq"
 
     input:
         tuple(
@@ -47,7 +47,7 @@ process BamConvertQualFilter {
 
     output:
         tuple(
-            path("${read_alias}_f${min_quality_filter}.fastq"),
+            path("${read_alias}_f${min_quality_filter}-${max_quality_filter}.fastq"),
             val(read_alias),
             path(reference)
         )
@@ -56,9 +56,9 @@ process BamConvertQualFilter {
 
     script:
         """
-        ${SortBam(reads, "${reads.baseName}_sorted")} &&\
+        ${SortBam(reads, "${read_alias}_sorted")} &&\
         ${Bam2FqQualLenFilter(
-            "${reads.baseName}_sorted",
+            "${read_alias}_sorted",
             "${read_alias}_f${min_quality_filter}-${max_quality_filter}.fastq",
             min_quality_filter,
             max_quality_filter,
