@@ -22,7 +22,11 @@ process CallVarscan {
         )
 
     output:
-        path("*.vcf")
+        tuple(
+            path("*.vcf"),
+            path("*.vcf.gz"),
+            path("*.vcf.gz"),
+        )
     
     publishDir "${params.outdir}/${read_alias}", mode: 'copy'
 
