@@ -17,8 +17,8 @@
  */
 def BcftoolsConcat(vcfs, read_alias) {
     """
-    bcftools concat -a ${vcfs.join(' ')} -Oz -o ${read_alias}.vcf.gz
-    bcftools +fill-tags ${read_alias}.vcf.gz -- -t TYPE -o ${read_alias}_final.vcf.gz -Oz
+    bcftools concat -a ${vcfs.join(' ')} -Oz -o ${read_alias}.vcf.gz && \
+    bcftools +fill-tags ${read_alias}.vcf.gz -- -t TYPE -o ${read_alias}_final.vcf.gz -Oz && \
     gunzip -c ${read_alias}_final.vcf.gz > ${read_alias}_final.vcf
     """.stripIndent().trim()
 }
