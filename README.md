@@ -38,8 +38,8 @@ project/
 │   └── rpoB_ref.fasta
 │   └── ...
 ├── reads/
-│   ├── sample1.fastq
-│   ├── sample2.fastq
+│   ├── sample1.bam
+│   ├── sample2.bam
 └───└── ...
 ```
 - Reference files in a directory (e.g., references/)
