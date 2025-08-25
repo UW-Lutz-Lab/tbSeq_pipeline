@@ -1,5 +1,6 @@
 include { 
     DetermineCoverage;
+    SortBam;
     } from "./ShellCommands.nf"
 
 // ======================
