@@ -39,6 +39,7 @@ process CoverageDepth {
 
     script:
     """
-        ${DetermineCoverage("${reads}", "${read_alias}")}
+        ${SortBam("${reads}", "${reads.baseName}_sorted.bam")}
+        ${DetermineCoverage("${reads.baseName}_sorted.bam", "${read_alias}")}
     """
 }
